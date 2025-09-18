@@ -15,6 +15,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String street;
     private int number;
     private String neighborhood;
     private String city;
@@ -34,7 +35,7 @@ public class Address {
     }
 
     public Address(Long id, int number, String neighborhood, String city, String state,
-                   String zipCode, Set<Customer> customers) {
+                   String zipCode, Set<Customer> customers, String street) {
         this.id = id;
         this.number = number;
         this.neighborhood = neighborhood;
@@ -42,6 +43,7 @@ public class Address {
         this.state = state;
         this.zipCode = zipCode;
         this.customers = customers;
+        this.street = street;
     }
 
     public Long getId() {
@@ -105,4 +107,11 @@ public class Address {
         return onUpdate;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
 }
