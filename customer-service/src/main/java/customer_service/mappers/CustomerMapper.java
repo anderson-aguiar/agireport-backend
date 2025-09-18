@@ -7,13 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustumerMapper {
+public class CustomerMapper {
 
     @Autowired
     private AddressMapper addressMapper;
 
 
     public Customer toEntity(CustomerRequestDTO dto) {
+
+        if (dto == null) return null;
+
         Customer customer = new Customer();
         customer.setCpf(dto.getCpf());
         customer.setName(dto.getName());
@@ -25,8 +28,8 @@ public class CustumerMapper {
         customer.setJobTitle(dto.getJobTitle());
 
         Address address = addressMapper.toEntity(dto.getAddress());
-
         customer.setAddress(address);
+
         return customer;
 
     }
