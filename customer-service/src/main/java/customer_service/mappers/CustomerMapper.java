@@ -1,6 +1,8 @@
 package customer_service.mappers;
 
+import customer_service.dtos.AddressResponseDTO;
 import customer_service.dtos.CustomerRequestDTO;
+import customer_service.dtos.CustomerResponseDTO;
 import customer_service.model.Address;
 import customer_service.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,24 @@ public class CustomerMapper {
 
         return customer;
 
+    }
+    public CustomerResponseDTO toDto(Customer entity){
+        if(entity == null) return null;
+
+        CustomerResponseDTO dto = new CustomerResponseDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setCpf(entity.getCpf());
+        dto.setDateOfbirth(entity.getDateOfbirth());
+        dto.setIncome(entity.getIncome());
+        dto.setBankAccount(entity.getBankAccount());
+        dto.setGender(entity.getGender());
+        dto.setMaritalStatus(entity.getMaritalStatus());
+        dto.setJobTitle(entity.getJobTitle());
+
+        AddressResponseDTO addressResponseDTO = addressMapper.toDto(entity.getAddress());
+        dto.setAddressResponseDTO(addressResponseDTO);
+        return dto;
     }
 
 }
