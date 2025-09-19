@@ -2,7 +2,9 @@ package customer_service.mappers;
 
 import customer_service.dtos.AddressRequestDTO;
 import customer_service.model.Address;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AddressMapper {
 
     public Address toEntity(AddressRequestDTO dto)
