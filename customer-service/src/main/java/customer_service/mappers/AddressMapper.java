@@ -1,6 +1,7 @@
 package customer_service.mappers;
 
 import customer_service.dtos.AddressRequestDTO;
+import customer_service.dtos.AddressResponseDTO;
 import customer_service.model.Address;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +21,17 @@ public class AddressMapper {
         address.setState(dto.getState());
         return address;
 
+    }
+    public AddressResponseDTO toDto(Address entity){
+        AddressResponseDTO dto = new AddressResponseDTO();
+        dto.setId(entity.getId());
+        dto.setStreet(entity.getStreet());
+        dto.setCity(entity.getCity());
+        dto.setNumber(entity.getNumber());
+        dto.setNeighborhood(entity.getNeighborhood());
+        dto.setZipCode(entity.getZipCode());
+        dto.setState(entity.getState());
+
+        return dto;
     }
 }
