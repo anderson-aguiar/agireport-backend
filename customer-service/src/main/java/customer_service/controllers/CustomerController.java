@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/customers")
 public class CustomerController { //POST, GET. PUT. DELETE
@@ -27,6 +29,11 @@ public class CustomerController { //POST, GET. PUT. DELETE
         CustomerResponseDTO responseDTO = customerService.findById(id);
         return ResponseEntity.ok(responseDTO);
     }
+    @GetMapping
+    public ResponseEntity<List<CustomerResponseDTO>> findAll(){
+        List<CustomerResponseDTO> customers = customerService.findAll();
 
+        return ResponseEntity.ok(customers);
+    }
 
 }
