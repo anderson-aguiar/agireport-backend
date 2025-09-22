@@ -8,8 +8,11 @@ import customer_service.model.Address;
 import customer_service.model.Customer;
 import customer_service.repositories.AddressRepository;
 import customer_service.repositories.CustomerRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -25,11 +28,13 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Transactional
     public CustomerResponseDTO save(CustomerRequestDTO requestDTO) {
         String zipCode = requestDTO.getAddress().getZipCode();
         int number = requestDTO.getAddress().getNumber();
+        String street = requestDTO.getAddress().getStreet();
 
-        Optional<Address> result = addressRepository.findByZipCodeAndNumber(zipCode, number);
+        Optional<Address> result = addressRepository.findByZipCodeAndNumberAndStreet(zipCode, number, street);
 
         Address address;
 
@@ -44,5 +49,13 @@ public class CustomerService {
 
         return customerMapper.toDto(customer);
 
+    }
+
+    @Transactional(readOnly = true)
+    public CustomerResponseDTO findById(Long id) {
+        Customer customer = customerRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cliente não encontrado"));
+
+        return customerMapper.toDto(customer);
     }
 }
