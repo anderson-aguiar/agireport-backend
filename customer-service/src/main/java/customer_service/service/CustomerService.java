@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,5 +58,46 @@ public class CustomerService {
                 () -> new EntityNotFoundException("Cliente não encontrado"));
 
         return customerMapper.toDto(customer);
+    }
+    @Transactional(readOnly = true)
+    public List<CustomerResponseDTO> findAll() {
+        List<Customer> customers = customerRepository.findAll();
+
+        return customers.stream().map(customer -> customerMapper.toDto(customer)).toList();
+
+        //return customers.stream().map(customerMapper::toDto).toList();
+
+    }
+    @Transactional
+    public CustomerResponseDTO update(Long id, CustomerRequestDTO requestDTO) {
+        Customer customer = customerRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cliente não encontrado"));
+
+        String zipCode = requestDTO.getAddress().getZipCode();
+        int number = requestDTO.getAddress().getNumber();
+        String street = requestDTO.getAddress().getStreet();
+
+        Optional<Address> result = addressRepository.findByZipCodeAndNumberAndStreet(zipCode, number, street);
+
+        Address address;
+
+        if(result.isEmpty()){
+            address = addressMapper.toEntity(requestDTO.getAddress());
+            addressRepository.save(address);
+        }else{
+            address = result.get();
+        }
+
+        customer.setCpf(requestDTO.getCpf());
+        customer.setName(requestDTO.getName());
+        customer.setDateOfbirth(requestDTO.getDateOfbirth());
+        customer.setIncome(requestDTO.getIncome());
+        customer.setBankAccount(requestDTO.getBankAccount());
+        customer.setGender(requestDTO.getGender());
+        customer.setMaritalStatus(requestDTO.getMaritalStatus());
+        customer.setJobTitle(requestDTO.getJobTitle());
+
+        customerRepository.save(customer);
+        return  customerMapper.toDto(customer);
     }
 }
