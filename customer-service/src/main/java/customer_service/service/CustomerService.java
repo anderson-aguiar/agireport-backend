@@ -68,4 +68,36 @@ public class CustomerService {
         //return customers.stream().map(customerMapper::toDto).toList();
 
     }
+    @Transactional
+    public CustomerResponseDTO update(Long id, CustomerRequestDTO requestDTO) {
+        Customer customer = customerRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cliente não encontrado"));
+
+        String zipCode = requestDTO.getAddress().getZipCode();
+        int number = requestDTO.getAddress().getNumber();
+        String street = requestDTO.getAddress().getStreet();
+
+        Optional<Address> result = addressRepository.findByZipCodeAndNumberAndStreet(zipCode, number, street);
+
+        Address address;
+
+        if(result.isEmpty()){
+            address = addressMapper.toEntity(requestDTO.getAddress());
+            addressRepository.save(address);
+        }else{
+            address = result.get();
+        }
+
+        customer.setCpf(requestDTO.getCpf());
+        customer.setName(requestDTO.getName());
+        customer.setDateOfbirth(requestDTO.getDateOfbirth());
+        customer.setIncome(requestDTO.getIncome());
+        customer.setBankAccount(requestDTO.getBankAccount());
+        customer.setGender(requestDTO.getGender());
+        customer.setMaritalStatus(requestDTO.getMaritalStatus());
+        customer.setJobTitle(requestDTO.getJobTitle());
+
+        customerRepository.save(customer);
+        return  customerMapper.toDto(customer);
+    }
 }

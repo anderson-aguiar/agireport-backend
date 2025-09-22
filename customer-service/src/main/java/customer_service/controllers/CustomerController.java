@@ -18,22 +18,32 @@ public class CustomerController { //POST, GET. PUT. DELETE
     private CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<CustomerResponseDTO> create(@RequestBody CustomerRequestDTO requestDTO){
+    public ResponseEntity<CustomerResponseDTO> create(@RequestBody CustomerRequestDTO requestDTO) {
         CustomerResponseDTO response = customerService.save(requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponseDTO> findById(@PathVariable Long id){
+    public ResponseEntity<CustomerResponseDTO> findById(@PathVariable Long id) {
         CustomerResponseDTO responseDTO = customerService.findById(id);
         return ResponseEntity.ok(responseDTO);
     }
-    @GetMapping
-    public ResponseEntity<List<CustomerResponseDTO>> findAll(){
-        List<CustomerResponseDTO> customers = customerService.findAll();
 
+    @GetMapping
+    public ResponseEntity<List<CustomerResponseDTO>> findAll() {
+        List<CustomerResponseDTO> customers = customerService.findAll();
         return ResponseEntity.ok(customers);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerResponseDTO> update(
+            @PathVariable Long id, @RequestBody CustomerRequestDTO requestDTO
+    ) {
+        CustomerResponseDTO customer = customerService.update(id, requestDTO);
+
+        return ResponseEntity.ok(customer);
+    }
+
 
 }
