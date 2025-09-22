@@ -3,11 +3,13 @@ package customer_service.model;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "tb_customer")
 public class Customer {
 
@@ -29,9 +31,11 @@ public class Customer {
     private Address address;
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime onCreate;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime onUpdate;
 
     public Customer() {

@@ -15,7 +15,7 @@ public class CustomerMapper {
     private AddressMapper addressMapper;
 
 
-    public Customer toEntity(CustomerRequestDTO dto) {
+    public Customer toEntity(CustomerRequestDTO dto, Address address) {
 
         if (dto == null) return null;
 
@@ -29,7 +29,7 @@ public class CustomerMapper {
         customer.setMaritalStatus(dto.getMaritalStatus());
         customer.setJobTitle(dto.getJobTitle());
 
-        Address address = addressMapper.toEntity(dto.getAddress());
+        //Address address = addressMapper.toEntity(dto.getAddress());
         customer.setAddress(address);
 
         return customer;

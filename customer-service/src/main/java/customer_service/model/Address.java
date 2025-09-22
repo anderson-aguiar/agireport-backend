@@ -3,12 +3,14 @@ package customer_service.model;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "tb_address")
 public class Address {
     @Id
@@ -26,9 +28,11 @@ public class Address {
     private Set<Customer> customers = new HashSet<>();
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime onCreate;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime onUpdate;
 
     public Address() {
