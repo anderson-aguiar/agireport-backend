@@ -21,7 +21,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @ResponseBody AddressRequestDTO requestDTO){
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AddressRequestDTO requestDTO){
 
         addressService.updateAddress(id, requestDTO);
         return ResponseEntity.noContent().build();
