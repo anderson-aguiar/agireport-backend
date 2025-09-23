@@ -25,6 +25,7 @@ public class Customer {
     private String gender;
     private String maritalStatus;
     private String jobTitle;
+    private LocalDateTime deletedAt = null;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
@@ -144,4 +145,11 @@ public class Customer {
         return onUpdate;
     }
 
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }
