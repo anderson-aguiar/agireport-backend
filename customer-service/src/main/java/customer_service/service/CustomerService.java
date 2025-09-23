@@ -83,11 +83,10 @@ public class CustomerService {
 
         if(result.isEmpty()){
             address = addressMapper.toEntity(requestDTO.getAddress());
-            addressRepository.save(address);
         }else{
             address = result.get();
         }
-
+        addressRepository.save(address);
         customer.setCpf(requestDTO.getCpf());
         customer.setName(requestDTO.getName());
         customer.setDateOfbirth(requestDTO.getDateOfbirth());
@@ -96,6 +95,7 @@ public class CustomerService {
         customer.setGender(requestDTO.getGender());
         customer.setMaritalStatus(requestDTO.getMaritalStatus());
         customer.setJobTitle(requestDTO.getJobTitle());
+        customer.setAddress(address);
 
         customerRepository.save(customer);
         return  customerMapper.toDto(customer);

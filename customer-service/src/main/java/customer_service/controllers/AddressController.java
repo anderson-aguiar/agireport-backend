@@ -35,12 +35,8 @@ public class AddressController {
     public ResponseEntity<List<AddressResponseDTO>> findAll() {
 
         List<AddressResponseDTO> response = addressService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
 
-        if (response == null || response.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
     }
 
     //task entidade address
@@ -48,11 +44,6 @@ public class AddressController {
     public ResponseEntity<AddressResponseDTO> findbyid(@PathVariable Long id) {
 
         AddressResponseDTO responseDTO = addressService.findById(id);
-
-        if (responseDTO == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 }
