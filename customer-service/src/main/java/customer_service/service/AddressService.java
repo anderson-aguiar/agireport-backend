@@ -59,10 +59,6 @@ public class AddressService {
     public List<AddressResponseDTO> findAll() {
         List<Address> result = addressRepository.findAll();
 
-        if (result.isEmpty()) {
-            return null;
-        }
-
         // List para receber todos os endereços convertidos em DTO
         List<AddressResponseDTO> addressDTO = new ArrayList<>();
 
@@ -81,7 +77,7 @@ public class AddressService {
         Address address;
 
         if (result.isEmpty()) {
-            return null;
+            throw new EntityNotFoundException("Endereço não encontrado");
         } else {
             address = result.get();
         }
