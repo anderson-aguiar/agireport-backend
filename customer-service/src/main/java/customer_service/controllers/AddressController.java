@@ -35,4 +35,16 @@ public class AddressController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
+    //task entidade address
+    @GetMapping("/{id}")
+    public ResponseEntity<AddressResponseDTO> findbyid(@PathVariable Long id){
+
+        AddressResponseDTO responseDTO = addressService.findById(id);
+
+        if (responseDTO == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+        }
+    }
 }

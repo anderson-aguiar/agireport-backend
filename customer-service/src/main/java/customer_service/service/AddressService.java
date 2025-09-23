@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddressService {
@@ -34,7 +35,7 @@ public class AddressService {
         }
     }
 
-
+    @Transactional(readOnly = true)
     public List<AddressResponseDTO> findAll() {
         List<Address> result = addressRepository.findAll();
 
@@ -50,5 +51,20 @@ public class AddressService {
             addressDTO.add(dto);
         }
         return addressDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public AddressResponseDTO findById(Long id){
+
+        Optional<Address> result = addressRepository.findById(id);
+        Address address;
+
+        if (result.isEmpty()){
+            return null;
+        } else {
+            address = result.get();
+        }
+        return addressMapper.toDto(address);
+
     }
 }
