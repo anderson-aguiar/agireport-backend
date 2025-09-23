@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,14 +55,14 @@ public class CustomerService {
 
     @Transactional(readOnly = true)
     public CustomerResponseDTO findById(Long id) {
-        Customer customer = customerRepository.findById(id).orElseThrow(
+        Customer customer = customerRepository.findByIdNotDeleted(id).orElseThrow(
                 () -> new EntityNotFoundException("Cliente não encontrado"));
 
         return customerMapper.toDto(customer);
     }
     @Transactional(readOnly = true)
     public List<CustomerResponseDTO> findAll() {
-        List<Customer> customers = customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAllNotDeleted();
 
         return customers.stream().map(customer -> customerMapper.toDto(customer)).toList();
 
@@ -70,7 +71,7 @@ public class CustomerService {
     }
     @Transactional
     public CustomerResponseDTO update(Long id, CustomerRequestDTO requestDTO) {
-        Customer customer = customerRepository.findById(id).orElseThrow(
+        Customer customer = customerRepository.findByIdNotDeleted(id).orElseThrow(
                 () -> new EntityNotFoundException("Cliente não encontrado"));
 
         String zipCode = requestDTO.getAddress().getZipCode();
@@ -99,5 +100,14 @@ public class CustomerService {
 
         customerRepository.save(customer);
         return  customerMapper.toDto(customer);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Customer customer = customerRepository.findByIdNotDeleted(id).orElseThrow(()
+                -> new EntityNotFoundException("Cliente não encontrado"));
+        customer.setDeletedAt(LocalDateTime.now());
+        customerRepository.save(customer);
+
     }
 }
