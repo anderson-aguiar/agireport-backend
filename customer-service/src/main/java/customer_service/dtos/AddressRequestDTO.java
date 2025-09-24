@@ -1,12 +1,21 @@
 package customer_service.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 public class AddressRequestDTO {
 
+    @NotBlank(message = "Rua é obrigatório")
     private String street;
+    @Positive(message = "Numero inválido")
     private int number;
+    @NotBlank(message = "Bairro é obrigatório")
     private String neighborhood;
+    @NotBlank(message = "Cidade é obrigatório")
     private String city;
+    @NotBlank(message = "Estado é obrigatório")
     private String state;
+    @NotBlank(message = "CEP é obrigatório")
     private String zipCode;
 
     public AddressRequestDTO() {
