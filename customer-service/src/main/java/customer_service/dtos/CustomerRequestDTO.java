@@ -1,19 +1,32 @@
 package customer_service.dtos;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import org.hibernate.validator.constraints.br.CPF;
+
 import java.time.LocalDate;
 
 public class CustomerRequestDTO {
-
+    @NotBlank(message = "O nome precisa ser informado")
     private String name;
 
+    @NotBlank(message = "CPF precisa ser informado")
+    @CPF(message = "Informe um CPF válido")
     private String cpf;
+
     private LocalDate dateOfbirth;
+    @Positive(message = "A renda precisa ser um valor positivo")
     private double income;
+
+    @NotBlank(message = "Conta obrigatória")
     private String bankAccount;
+
     private String gender;
+
     private String maritalStatus;
     private String jobTitle;
-
+    @Valid
     private AddressRequestDTO address;
 
     public CustomerRequestDTO() {

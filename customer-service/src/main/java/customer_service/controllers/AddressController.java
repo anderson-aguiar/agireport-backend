@@ -3,6 +3,7 @@ package customer_service.controllers;
 import customer_service.dtos.AddressRequestDTO;
 import customer_service.dtos.AddressResponseDTO;
 import customer_service.service.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AddressRequestDTO requestDTO) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid AddressRequestDTO requestDTO) {
 
         addressService.updateAddress(id, requestDTO);
         return ResponseEntity.noContent().build();
