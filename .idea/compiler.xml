@@ -16,6 +16,9 @@
       <module name="customer-service" options="-parameters" />
       <module name="customer-service.main" options="-parameters" />
       <module name="customer-service.test" options="-parameters" />
+      <module name="history-service" options="-parameters" />
+      <module name="history-service.main" options="-parameters" />
+      <module name="history-service.test" options="-parameters" />
     </option>
   </component>
 </project>
