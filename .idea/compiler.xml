@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="analytic-service_main" target="21" />
       <module name="analytic-service_test" target="21" />
+      <module name="history-service_main" target="21" />
+      <module name="history-service_test" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
