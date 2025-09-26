@@ -3,12 +3,16 @@ package history_service.model;
 
 import history_service.mappers.HashMapConverter;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_history")
+@EntityListeners(AuditingEntityListener.class)
 public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +22,10 @@ public class History {
 
     @Convert(converter = HashMapConverter.class) //usa o conversor personalizado para JSON
     private Map<String, Object> payload; //representa o JSON
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime onCreate;
 
     public History() {
     }
@@ -50,6 +58,10 @@ public class History {
 
     public void setPayload(Map<String, Object> payload) {
         this.payload = payload;
+    }
+
+    public LocalDateTime getOnCreate() {
+        return onCreate;
     }
 
     @Override
