@@ -21,6 +21,15 @@
           </set>
         </option>
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/history-service" />
+        <option name="gradleJvm" value="zulu-21" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/history-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>
