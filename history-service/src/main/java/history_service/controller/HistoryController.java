@@ -1,6 +1,10 @@
 package history_service.controller;
 
-import history_service.dto.HistoryRequestDTO;
+import history_service.dtos.HistoryRequestDTO;
+import history_service.dtos.HistoryResponseDTO;
+import history_service.service.HistoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +14,14 @@ import java.util.List;
 @RequestMapping("/history")
 public class HistoryController {
 
+    @Autowired
+    private HistoryService historyService;
+
     @PostMapping
-    public ResponseEntity<HistoryRequestDTO> create(@RequestBody HistoryRequestDTO requestDTO){
-        return null;
+    public ResponseEntity<HistoryResponseDTO> create(@RequestBody HistoryRequestDTO requestDTO){
+        HistoryResponseDTO response = historyService.save(requestDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
