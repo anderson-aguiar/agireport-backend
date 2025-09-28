@@ -1,4 +1,4 @@
-package customer_service.execptions;
+package customer_service.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

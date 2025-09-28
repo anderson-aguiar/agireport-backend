@@ -1,4 +1,4 @@
-package history_service.dto;
+package history_service.dtos;
 
 import java.util.Map;
 
