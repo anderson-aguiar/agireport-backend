@@ -5,6 +5,8 @@ import customer_service.dtos.CustomerResponseDTO;
 import customer_service.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +34,8 @@ public class CustomerController { //POST, GET. PUT. DELETE
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerResponseDTO>> findAll() {
-        List<CustomerResponseDTO> customers = customerService.findAll();
+    public ResponseEntity<Page<CustomerResponseDTO>> findAll(Pageable pageable) {
+        Page<CustomerResponseDTO> customers = customerService.findAll(pageable);
         return ResponseEntity.ok(customers);
     }
 

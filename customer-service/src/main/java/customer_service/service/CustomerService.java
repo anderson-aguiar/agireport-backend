@@ -11,6 +11,8 @@ import customer_service.repositories.CustomerRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,10 +63,10 @@ public class CustomerService {
         return customerMapper.toDto(customer);
     }
     @Transactional(readOnly = true)
-    public List<CustomerResponseDTO> findAll() {
-        List<Customer> customers = customerRepository.findAllNotDeleted();
+    public Page<CustomerResponseDTO> findAll(Pageable pageable) {
+        Page<Customer> customers = customerRepository.findAllNotDeleted(pageable);
 
-        return customers.stream().map(customer -> customerMapper.toDto(customer)).toList();
+        return customers.map(customer -> customerMapper.toDto(customer));
 
         //return customers.stream().map(customerMapper::toDto).toList();
 
