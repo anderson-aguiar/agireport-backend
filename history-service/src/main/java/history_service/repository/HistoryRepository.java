@@ -1,6 +1,8 @@
 package history_service.repository;
 
 import history_service.model.History;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +12,11 @@ import java.util.List;
 
 public interface HistoryRepository extends JpaRepository<History, Long> {
 
-    List<History> findAllByCustomerId(Long id);
+    @Query(value = "SELECT * FROM tb_history WHERE customer_id = :customerId",
+    countQuery = "SELECT COUNT(*) FROM tb_history WHERE customer_id = :customerId", nativeQuery = true)
+    Page<History> findAllByCustomerId(
+            @Param("customerId")Long customerId,
+            Pageable pageable);
 
     @Query(value = "SELECT * FROM tb_history tb WHERE tb.customer_id = :customerId AND tb.on_create >= :startDate",
             nativeQuery = true)

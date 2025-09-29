@@ -4,6 +4,8 @@ import history_service.dtos.HistoryRequestDTO;
 import history_service.dtos.HistoryResponseDTO;
 import history_service.service.HistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +27,14 @@ public class HistoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HistoryRequestDTO> findById(@PathVariable Long id){
+    public ResponseEntity<HistoryResponseDTO> findById(@PathVariable Long id){
         return null;
     }
 
     @GetMapping("/all/{customerId}")
-    public ResponseEntity<List<HistoryRequestDTO>> findAllByCustomerId(@PathVariable Long customerId){
-
-        return null;
+    public ResponseEntity<Page<HistoryResponseDTO>> findAllByCustomerId(@PathVariable Long customerId, Pageable pageable){
+        Page<HistoryResponseDTO> histories = historyService.findAllByCustomerId(customerId, pageable);
+        return ResponseEntity.ok(histories);
     }
     @GetMapping("/{customerId}/last-year")
     public ResponseEntity<List<HistoryResponseDTO>> findAllLastYearByCustomerId(@PathVariable Long customerId){
