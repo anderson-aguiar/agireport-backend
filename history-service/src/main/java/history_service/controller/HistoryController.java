@@ -35,9 +35,9 @@ public class HistoryController {
         return null;
     }
     @GetMapping("/{customerId}/last-year")
-    public ResponseEntity<List<HistoryRequestDTO>> findAllLastYearByCustomerId(@PathVariable Long customerId){
-
-        return null;
+    public ResponseEntity<List<HistoryResponseDTO>> findAllLastYearByCustomerId(@PathVariable Long customerId){
+        List<HistoryResponseDTO> histories = historyService.findAllLastYearByCustomerId(customerId);
+        return ResponseEntity.ok(histories);
     }
 
 }

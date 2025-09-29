@@ -12,9 +12,9 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
 
     List<History> findAllByCustomerId(Long id);
 
-    @Query(value = "SELECT * FROM tb_history tb WHERE tb.customer_id = :customerId AND tb.on_create >= startDate",
+    @Query(value = "SELECT * FROM tb_history tb WHERE tb.customer_id = :customerId AND tb.on_create >= :startDate",
             nativeQuery = true)
     List<History> findAllLastYearByCustomerId(
             @Param("customerId") Long customerId,
-            @Param("date") LocalDateTime startDate);
+            @Param("startDate") LocalDateTime startDate);
 }
