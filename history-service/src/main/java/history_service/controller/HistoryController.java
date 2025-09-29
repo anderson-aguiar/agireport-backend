@@ -29,7 +29,7 @@ public class HistoryController {
         return null;
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/all/{customerId}")
     public ResponseEntity<List<HistoryRequestDTO>> findAllByCustomerId(@PathVariable Long customerId){
 
         return null;
