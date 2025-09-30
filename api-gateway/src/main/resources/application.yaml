@@ -12,7 +12,7 @@ spring:
             - id: customer-service
               uri: http://localhost:8083
               predicates:
-                - Path=/customer/**
+                - Path=/customers/**
               filters: []
             - id: analytic-service
               uri: http://localhost:8082

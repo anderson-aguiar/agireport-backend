@@ -15,7 +15,7 @@ INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, 
 
 INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Maria Oliveira', '84859846001', '1985-09-15', 5000.00, '65432-1', 'Feminino', 'Casada', 'Engenheira Civil', 2, '2023-11-10 14:00:00', '2024-02-20 15:30:00');
 
-INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Carlos Pereira', '62648716002', '1978-12-02', 4200.00, '11223-4', 'Masculino', 'Casado', 'Professor', 3, '2023-10-05 11:00:00', '2024-03-01 09:00:00');
+INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Carlos Pereira', '62648716002', '1978-12-02', 15200.00, '11223-4', 'Masculino', 'Casado', 'Professor', 3, '2023-10-05 11:00:00', '2024-03-01 09:00:00');
 
 INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Ana Costa', '98765432100', '1992-07-10', 2800.00, '99887-6', 'Feminino', 'Solteira', 'Designer Gráfica', 4, '2023-09-20 16:00:00', '2024-04-10 12:00:00');
 
