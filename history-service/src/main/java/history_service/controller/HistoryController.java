@@ -28,7 +28,9 @@ public class HistoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<HistoryResponseDTO> findById(@PathVariable Long id){
-        return null;
+        HistoryResponseDTO response = historyService.findById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/all/{customerId}")
