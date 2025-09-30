@@ -13,7 +13,7 @@ public class WebClientUtil {
     // Injetando o WebClient com a baseUrl
     public WebClientUtil(WebClient.Builder builder) {
         this.webClient = builder
-                .baseUrl("http://localhost:8084")
+                .baseUrl("http://localhost:8080")
                 .build();
     }
 
