@@ -36,6 +36,7 @@ public class HistoryController {
         Page<HistoryResponseDTO> histories = historyService.findAllByCustomerId(customerId, pageable);
         return ResponseEntity.ok(histories);
     }
+
     @GetMapping("/{customerId}/last-year")
     public ResponseEntity<List<HistoryResponseDTO>> findAllLastYearByCustomerId(@PathVariable Long customerId){
         List<HistoryResponseDTO> histories = historyService.findAllLastYearByCustomerId(customerId);

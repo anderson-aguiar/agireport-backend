@@ -15,6 +15,9 @@
       <module name="analytic-service.test" options="-parameters" />
       <module name="analytic-service_main" options="-parameters" />
       <module name="analytic-service_test" options="-parameters" />
+      <module name="api-gateway" options="-parameters" />
+      <module name="api-gateway.main" options="-parameters" />
+      <module name="api-gateway.test" options="-parameters" />
       <module name="customer-service" options="-parameters" />
       <module name="customer-service.main" options="-parameters" />
       <module name="customer-service.test" options="-parameters" />
