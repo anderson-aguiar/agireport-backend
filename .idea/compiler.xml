@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="analytic-service_main" target="21" />
       <module name="analytic-service_test" target="21" />
+      <module name="api-gateway_main" target="21" />
+      <module name="api-gateway_test" target="21" />
       <module name="history-service_main" target="21" />
       <module name="history-service_test" target="21" />
     </bytecodeTargetLevel>
@@ -18,6 +20,8 @@
       <module name="api-gateway" options="-parameters" />
       <module name="api-gateway.main" options="-parameters" />
       <module name="api-gateway.test" options="-parameters" />
+      <module name="api-gateway_main" options="-parameters" />
+      <module name="api-gateway_test" options="-parameters" />
       <module name="customer-service" options="-parameters" />
       <module name="customer-service.main" options="-parameters" />
       <module name="customer-service.test" options="-parameters" />
