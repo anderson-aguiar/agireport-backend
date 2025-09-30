@@ -1,6 +1,5 @@
 package analytic_service.services;
 
-import analytic_service.dto.AnalyticResponseDTO;
 import analytic_service.dto.HistoryResponseDTO;
 import analytic_service.repositories.AnalyticRepository;
 import analytic_service.utils.WebClientUtil;

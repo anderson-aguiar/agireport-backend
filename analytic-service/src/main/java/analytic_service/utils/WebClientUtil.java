@@ -25,7 +25,7 @@ public class WebClientUtil {
                 .bodyToMono(responseType)
                 .block();
     }
-    //Get que retorna vários onjetos
+    //Get generico que retorna vários objetos
     public <T> List<T> getList(String uri, Class<T> responseType) {
         return webClient.get()
                 .uri(uri)
