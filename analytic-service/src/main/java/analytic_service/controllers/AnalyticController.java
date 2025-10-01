@@ -1,12 +1,11 @@
 package analytic_service.controllers;
 
+import analytic_service.dto.AnalyticResponseDTO;
 import analytic_service.dto.HistoryResponseDTO;
 import analytic_service.services.AnalyticService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +22,15 @@ public class AnalyticController {
     //TESTE DE REQUISIÇÃO AO MICROSERVIÇO HISTORY
     @GetMapping("/{customerId}")
     public ResponseEntity<List<HistoryResponseDTO>> findAll(@PathVariable Long customerId){
-        List<HistoryResponseDTO> response = analyticService.findAllHistories(customerId);
 
-        return ResponseEntity.ok(response);
+
+        return null;
+    }
+
+    @PostMapping("/{customerId}")
+    public ResponseEntity<AnalyticResponseDTO> create(@PathVariable Long customerId){
+        AnalyticResponseDTO response = analyticService.save(customerId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
