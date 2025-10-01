@@ -5,6 +5,7 @@ import history_service.dtos.HistoryResponseDTO;
 import history_service.mappers.HistoryMapper;
 import history_service.model.History;
 import history_service.repository.HistoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,14 @@ public class HistoryService {
     }
 
     @Transactional(readOnly = true)
+    public HistoryResponseDTO findById(Long id) {
+        History history = historyRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Histórico não encontrado"));
+
+        return historyMapper.toDto(history);
+    }
+
+    @Transactional(readOnly = true)
     public List<HistoryResponseDTO> findAllLastYearByCustomerId(Long customerId) {
         //Pega da data atual, desconta 1 ano e inicia com o horário de 0h
         LocalDateTime startDateMidNigth = LocalDateTime.now().minusYears(1).toLocalDate().atStartOfDay();
@@ -50,4 +59,6 @@ public class HistoryService {
 
         return histories;
     }
+
+
 }
