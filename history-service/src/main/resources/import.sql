@@ -27,7 +27,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 2186.64, "days_overdue": 106, "occurence_date": "2025-04-15"}', '2025-05-07 22:31:38');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 4258.25, "days_overdue": 17, "occurence_date": "2024-12-29"}', '2025-05-08 13:16:33');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "PAGAMENTO", "value": 927.82, "date": "2024-11-13"}', '2025-05-13 04:57:11');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "EMPRESTIMO", "contract_date": "2025-04-12", "value": 73914.58, "installments": 24, "status": "ATIVO"}', '2025-05-13 08:39:59');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-04-12", "value": 73914.58, "installments": 24, "status": "ATIVO"}', '2025-05-13 08:39:59');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 4584.89, "days_overdue": 16, "occurence_date": "2025-02-21"}', '2025-05-15 10:21:41');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 339.08, "days_overdue": 57, "occurence_date": "2025-03-13"}', '2025-05-15 18:50:03');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 1709.86, "days_overdue": 58, "occurence_date": "2025-05-15"}', '2025-05-19 00:54:15');
@@ -56,7 +56,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "INADIMPLENCIA", "value": 4436.55, "days_overdue": 24, "occurence_date": "2025-04-26"}', '2025-08-01 12:03:43');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 3403.68, "days_overdue": 67, "occurence_date": "2025-07-17"}', '2025-08-03 09:45:31');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "PAGAMENTO", "value": 1148.03, "date": "2024-11-10"}', '2025-08-04 23:09:41');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "EMPRESTIMO", "contract_date": "2025-02-25", "value": 48091.05, "installments": 36, "status": "ATIVO"}', '2025-08-05 19:50:48');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-02-25", "value": 48091.05, "installments": 36, "status": "ATIVO"}', '2025-08-05 19:50:48');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 2708.89, "days_overdue": 44, "occurence_date": "2025-02-19"}', '2025-08-08 07:31:06');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "INADIMPLENCIA", "value": 2604.21, "days_overdue": 43, "occurence_date": "2025-04-02"}', '2025-08-10 06:49:29');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 2865.37, "days_overdue": 78, "occurence_date": "2025-07-10"}', '2025-08-14 03:49:01');
@@ -85,7 +85,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "PAGAMENTO", "value": 2345.62, "date": "2025-07-05"}', '2025-09-13 17:33:31');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "PAGAMENTO", "value": 2380.96, "date": "2024-12-18"}', '2025-09-13 22:44:29');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "PAGAMENTO", "value": 2991.83, "date": "2025-06-06"}', '2025-09-14 22:12:47');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "EMPRESTIMO", "contract_date": "2025-09-05", "value": 64106.0, "installments": 24, "status": "ATIVO"}', '2025-09-18 08:26:22');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-09-05", "value": 64106.0, "installments": 24, "status": "ATIVO"}', '2025-09-18 08:26:22');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "INADIMPLENCIA", "value": 3888.91, "days_overdue": 71, "occurence_date": "2025-08-07"}', '2025-09-19 00:34:54');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "ATRASO", "value": 2422.27, "days_overdue": 74, "occurence_date": "2025-09-14"}', '2025-09-19 20:03:18');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (1, '{"eventType": "PAGAMENTO", "value": 578.98, "date": "2025-08-07"}', '2025-09-22 05:00:52');
@@ -146,7 +146,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "PAGAMENTO", "value": 6185.18, "date": "2025-06-23"}', '2025-07-31 04:11:49');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "PAGAMENTO", "value": 4262.14, "date": "2025-06-20"}', '2025-07-31 19:25:30');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "PAGAMENTO", "value": 2757.13, "date": "2025-04-08"}', '2025-08-02 12:04:51');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "EMPRESTIMO", "contract_date": "2024-11-19", "value": 80567.48, "installments": 12, "status": "ATIVO"}', '2025-08-03 10:40:00');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "FINANCIAMENTO", "contract_date": "2024-11-19", "value": 80567.48, "installments": 12, "status": "ATIVO"}', '2025-08-03 10:40:00');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "INVESTIMENTO", "value": 38863.59, "type": "CDB", "application_date": "2025-07-25"}', '2025-08-03 13:55:42');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "INVESTIMENTO", "value": 25670.54, "type": "ACOES", "application_date": "2025-07-13"}', '2025-08-04 10:49:50');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "EMPRESTIMO", "contract_date": "2025-04-11", "value": 48934.98, "installments": 60, "status": "ATIVO"}', '2025-08-08 00:02:14');
@@ -177,7 +177,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "PAGAMENTO", "value": 4492.97, "date": "2025-06-15"}', '2025-09-07 17:02:44');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "PAGAMENTO", "value": 7373.84, "date": "2025-04-18"}', '2025-09-09 04:16:09');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "INVESTIMENTO", "value": 27625.42, "type": "LCA", "application_date": "2025-07-11"}', '2025-09-09 05:53:12');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "EMPRESTIMO", "contract_date": "2025-09-02", "value": 42541.28, "installments": 24, "status": "ATIVO"}', '2025-09-09 07:19:02');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-09-02", "value": 42541.28, "installments": 24, "status": "ATIVO"}', '2025-09-09 07:19:02');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "ATRASO", "value": 2340.23, "days_overdue": 20, "occurence_date": "2025-09-09"}', '2025-09-10 05:54:35');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "INVESTIMENTO", "value": 24646.62, "type": "LCA", "application_date": "2025-04-13"}', '2025-09-11 00:07:56');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (2, '{"eventType": "INVESTIMENTO", "value": 13004.84, "type": "FUNDOS", "application_date": "2025-06-23"}', '2025-09-11 02:51:51');
@@ -249,7 +249,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "PAGAMENTO", "value": 4012.74, "date": "2025-07-30"}', '2025-08-09 10:10:38');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "PAGAMENTO", "value": 4348.19, "date": "2025-08-01"}', '2025-08-12 10:16:09');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "INVESTIMENTO", "value": 19985.09, "type": "LCA", "application_date": "2025-03-20"}', '2025-08-12 18:18:51');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "EMPRESTIMO", "contract_date": "2025-06-28", "value": 56037.27, "installments": 48, "status": "INATIVO"}', '2025-08-14 09:24:20');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-06-28", "value": 56037.27, "installments": 48, "status": "INATIVO"}', '2025-08-14 09:24:20');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "PAGAMENTO", "value": 3321.68, "date": "2025-06-03"}', '2025-08-15 01:16:43');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "INVESTIMENTO", "value": 23166.93, "type": "CDB", "application_date": "2025-06-26"}', '2025-08-18 11:02:30');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (3, '{"eventType": "PAGAMENTO", "value": 3043.87, "date": "2025-06-16"}', '2025-08-20 15:59:39');
@@ -295,7 +295,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "PAGAMENTO", "value": 3109.67, "date": "2025-04-21"}', '2025-05-03 07:54:13');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "PAGAMENTO", "value": 3386.93, "date": "2025-02-28"}', '2025-05-04 22:24:49');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "EMPRESTIMO", "contract_date": "2025-04-17", "value": 98714.6, "installments": 36, "status": "ATIVO"}', '2025-05-07 03:28:47');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "EMPRESTIMO", "contract_date": "2024-11-26", "value": 38441.81, "installments": 60, "status": "INATIVO"}', '2025-05-08 14:18:11');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "FINANCIAMENTO", "contract_date": "2024-11-26", "value": 38441.81, "installments": 60, "status": "INATIVO"}', '2025-05-08 14:18:11');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "INVESTIMENTO", "value": 25834.4, "type": "TESOURO", "application_date": "2025-03-20"}', '2025-05-11 09:48:53');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "ATRASO", "value": 666.49, "days_overdue": 88, "occurence_date": "2025-03-28"}', '2025-05-12 05:35:15');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "PAGAMENTO", "value": 2704.97, "date": "2025-05-13"}', '2025-05-19 17:44:46');
@@ -326,7 +326,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "INVESTIMENTO", "value": 35362.37, "type": "LCA", "application_date": "2025-05-26"}', '2025-07-30 18:44:10');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "ATRASO", "value": 852.87, "days_overdue": 38, "occurence_date": "2025-07-31"}', '2025-07-31 12:14:35');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "PAGAMENTO", "value": 3497.38, "date": "2025-04-21"}', '2025-07-31 15:43:37');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "EMPRESTIMO", "contract_date": "2025-06-23", "value": 58577.1, "installments": 60, "status": "ATIVO"}', '2025-07-31 16:38:44');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-06-23", "value": 58577.1, "installments": 60, "status": "ATIVO"}', '2025-07-31 16:38:44');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "PAGAMENTO", "value": 3835.65, "date": "2024-11-18"}', '2025-08-03 11:24:06');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "PAGAMENTO", "value": 3642.35, "date": "2025-02-22"}', '2025-08-06 19:24:55');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (4, '{"eventType": "ATRASO", "value": 1022.88, "days_overdue": 23, "occurence_date": "2025-08-05"}', '2025-08-07 06:09:38');
@@ -423,7 +423,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "INVESTIMENTO", "value": 370831.93, "type": "CDB", "application_date": "2025-05-02"}', '2025-07-01 15:29:29');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "PAGAMENTO", "value": 2878.91, "date": "2025-02-27"}', '2025-07-05 01:06:34');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "PAGAMENTO", "value": 2933.34, "date": "2025-05-01"}', '2025-07-06 09:35:55');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "EMPRESTIMO", "contract_date": "2025-03-15", "value": 81856.75, "installments": 24, "status": "INATIVO"}', '2025-07-12 02:13:39');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-03-15", "value": 81856.75, "installments": 24, "status": "INATIVO"}', '2025-07-12 02:13:39');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "ATRASO", "value": 2700.26, "days_overdue": 30, "occurence_date": "2025-04-25"}', '2025-07-14 00:37:58');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "PAGAMENTO", "value": 1354.89, "date": "2025-06-16"}', '2025-07-27 01:45:35');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "INVESTIMENTO", "value": 181402.0, "type": "FUNDOS", "application_date": "2025-07-24"}', '2025-07-28 10:01:37');
@@ -446,7 +446,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "PAGAMENTO", "value": 3381.58, "date": "2024-11-23"}', '2025-08-27 08:55:33');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "PAGAMENTO", "value": 2322.14, "date": "2025-07-16"}', '2025-08-27 12:36:23');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "INVESTIMENTO", "value": 148714.37, "type": "LCA", "application_date": "2025-08-06"}', '2025-09-01 10:30:02');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "EMPRESTIMO", "contract_date": "2025-08-18", "value": 83533.42, "installments": 60, "status": "ATIVO"}', '2025-09-01 23:38:41');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-08-18", "value": 83533.42, "installments": 60, "status": "ATIVO"}', '2025-09-01 23:38:41');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "ATRASO", "value": 469.24, "days_overdue": 56, "occurence_date": "2025-08-29"}', '2025-09-05 15:03:24');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "INVESTIMENTO", "value": 250430.43, "type": "FUNDOS", "application_date": "2024-11-16"}', '2025-09-05 21:42:52');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (5, '{"eventType": "INVESTIMENTO", "value": 346532.54, "type": "TESOURO", "application_date": "2025-07-27"}', '2025-09-06 02:03:18');
@@ -541,7 +541,7 @@ INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "PAGAMENTO", "value": 1798.64, "date": "2024-12-31"}', '2025-08-22 08:20:32');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "PAGAMENTO", "value": 3374.02, "date": "2025-07-20"}', '2025-08-26 11:17:02');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "ATRASO", "value": 3190.71, "days_overdue": 12, "occurence_date": "2025-07-28"}', '2025-08-26 19:39:13');
-INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "EMPRESTIMO", "contract_date": "2025-03-07", "value": 22862.98, "installments": 48, "status": "ATIVO"}', '2025-08-27 02:02:25');
+INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "FINANCIAMENTO", "contract_date": "2025-03-07", "value": 22862.98, "installments": 48, "status": "ATIVO"}', '2025-08-27 02:02:25');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "INADIMPLENCIA", "value": 721.22, "days_overdue": 9, "occurence_date": "2025-04-23"}', '2025-08-29 13:02:01');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "PAGAMENTO", "value": 1335.39, "date": "2025-02-19"}', '2025-08-29 19:32:04');
 INSERT INTO tb_history (customer_id, payload, on_create) VALUES (6, '{"eventType": "EMPRESTIMO", "contract_date": "2025-08-20", "value": 77473.42, "installments": 24, "status": "INATIVO"}', '2025-09-02 04:43:04');
