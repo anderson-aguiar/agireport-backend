@@ -20,16 +20,11 @@ public class AnalyticController {
     }
 
     //TESTE DE REQUISIÇÃO AO MICROSERVIÇO HISTORY
+
+
     @GetMapping("/{customerId}")
-    public ResponseEntity<List<HistoryResponseDTO>> findAll(@PathVariable Long customerId){
-
-
-        return null;
-    }
-
-    @PostMapping("/{customerId}")
-    public ResponseEntity<AnalyticResponseDTO> create(@PathVariable Long customerId){
-        AnalyticResponseDTO response = analyticService.save(customerId);
+    public ResponseEntity<?> create(@PathVariable Long customerId){
+        Integer response = analyticService.save(customerId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
