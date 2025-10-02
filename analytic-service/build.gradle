@@ -22,11 +22,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.deeplearning4j:deeplearning4j-core:1.0.0-M2.1'
+    implementation 'org.nd4j:nd4j-native-platform:1.0.0-M2.1'
+    implementation 'org.deeplearning4j:deeplearning4j-modelimport:1.0.0-M2.1'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
+configurations.configureEach {
+    resolutionStrategy {
+        force 'org.apache.commons:commons-compress:1.26.0'
+    }
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }

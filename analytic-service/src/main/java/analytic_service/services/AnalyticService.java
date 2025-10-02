@@ -7,9 +7,9 @@ import analytic_service.repositories.AnalyticRepository;
 import analytic_service.utils.GenerateVector;
 import analytic_service.utils.WebClientUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -21,19 +21,23 @@ public class AnalyticService {
 
 
     private final AnalyticRepository analyticRepository;
-
+    private final ScoreService scoreService;
     private final WebClientUtil webClientUtil;
     private final GenerateVector generateVector;
 
-    public AnalyticService(AnalyticRepository analyticRepository, WebClientUtil webClientUtil, GenerateVector generateVector) {
+    public AnalyticService(AnalyticRepository analyticRepository, ScoreService scoreService, WebClientUtil webClientUtil, GenerateVector generateVector) {
         this.analyticRepository = analyticRepository;
+        this.scoreService = scoreService;
         this.webClientUtil = webClientUtil;
         this.generateVector = generateVector;
     }
 
 
-    public AnalyticResponseDTO save(Long customerId) {
-        return null;
+    public Integer save(Long customerId) {
+
+        findAllHistoriesAndCustomer(customerId);
+        generateVector();
+       return scoreService.calc(data);
     }
 
     public void findAllHistoriesAndCustomer(Long customerId) {
@@ -45,6 +49,7 @@ public class AnalyticService {
 
     public void generateVector() {
         data = generateVector.generateData(histories, customerResponseDTO);
+        System.out.println(Arrays.toString(data));
     }
 }
 

@@ -83,6 +83,7 @@ public class GenerateVector {
             if (income > 0) {
                 // Cálculo: Comprometimento = (Soma das Parcelas ATIVAS) / Renda
                 incomeCommitmentPercentage = sumActiveMonthlyInstallments / income;
+                incomeCommitmentPercentage = Math.round(incomeCommitmentPercentage * 100.0) / 100.0;
             }
             // Cálculo da Idade
             // Usa LocalDate.now() para calcular a idade no dia de hoje
