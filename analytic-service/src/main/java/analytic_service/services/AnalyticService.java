@@ -3,15 +3,19 @@ package analytic_service.services;
 import analytic_service.dto.AnalyticResponseDTO;
 import analytic_service.dto.CustomerResponseDTO;
 import analytic_service.dto.HistoryResponseDTO;
+import analytic_service.exceptions.ServiceNotFoundException;
 import analytic_service.mapper.AnalyticMapper;
 import analytic_service.model.Analytic;
 import analytic_service.repositories.AnalyticRepository;
 import analytic_service.utils.GenerateVector;
 import analytic_service.utils.WebClientUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -84,13 +88,26 @@ public class AnalyticService {
     }
 
     private List<HistoryResponseDTO> findHistories(Long customerId) {
-        String uri = "/history/" + customerId + "/last-year";
-        return webClientUtil.getList(uri, HistoryResponseDTO.class);
+        try{
+            String uri = "/history/" + customerId + "/last-year";
+            return webClientUtil.getList(uri, HistoryResponseDTO.class);
+        }catch (WebClientResponseException.InternalServerError ex){
+            throw new ServiceNotFoundException("History-Service indiponivel");
+        }
     }
 
     private CustomerResponseDTO findCustomer(Long customerId) {
-        String uri = "/customers/" + customerId;
-        return webClientUtil.get(uri, CustomerResponseDTO.class);
+        try{
+            String uri = "/customers/" + customerId;
+            return webClientUtil.get(uri, CustomerResponseDTO.class);
+
+
+        } catch (WebClientResponseException.NotFound ex) {
+            throw new EntityNotFoundException("Cliente " + customerId + " não encontrado", ex);
+
+        } catch (WebClientResponseException.InternalServerError | WebClientRequestException ex) {
+            throw new ServiceNotFoundException("Customer-Service indisponível");
+        }
     }
 }
 
