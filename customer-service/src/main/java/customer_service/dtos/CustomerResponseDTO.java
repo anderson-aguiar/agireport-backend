@@ -1,6 +1,7 @@
 package customer_service.dtos;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CustomerResponseDTO {
 
@@ -14,6 +15,7 @@ public class CustomerResponseDTO {
     private String gender;
     private String maritalStatus;
     private String jobTitle;
+    private LocalDateTime onCreate;
 
     private AddressResponseDTO addressResponseDTO;
 
@@ -22,7 +24,7 @@ public class CustomerResponseDTO {
 
     public CustomerResponseDTO(Long id, String name, String cpf, LocalDate dateOfbirth,
                                double income, String bankAccount, String gender, String maritalStatus,
-                               String jobTitle, AddressResponseDTO addressResponseDTO) {
+                               String jobTitle, LocalDateTime onCreate, AddressResponseDTO addressResponseDTO) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
@@ -33,6 +35,7 @@ public class CustomerResponseDTO {
         this.maritalStatus = maritalStatus;
         this.jobTitle = jobTitle;
         this.addressResponseDTO = addressResponseDTO;
+        this.onCreate = onCreate;
     }
 
     public Long getId() {
@@ -105,6 +108,14 @@ public class CustomerResponseDTO {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
+    }
+
+    public LocalDateTime getOnCreate() {
+        return onCreate;
+    }
+
+    public void setOnCreate(LocalDateTime onCreate) {
+        this.onCreate = onCreate;
     }
 
     public AddressResponseDTO getAddressResponseDTO() {
