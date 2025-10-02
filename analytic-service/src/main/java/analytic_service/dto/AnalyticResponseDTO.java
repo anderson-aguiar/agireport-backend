@@ -1,5 +1,7 @@
 package analytic_service.dto;
 
+import java.time.LocalDateTime;
+
 public class AnalyticResponseDTO {
 
     private Long id;
@@ -7,15 +9,17 @@ public class AnalyticResponseDTO {
     private Long clientId;
     private Integer score;
     private String typeOfRisk;
+    private LocalDateTime onCreate;
 
     public AnalyticResponseDTO() {
     }
 
-    public AnalyticResponseDTO(Long id, Long clienteId, Integer score, String typeOfRisk) {
+    public AnalyticResponseDTO(Long id, Long clienteId, Integer score, String typeOfRisk, LocalDateTime onCreate) {
         this.id = id;
         this.clientId = clienteId;
         this.score = score;
         this.typeOfRisk = typeOfRisk;
+        this.onCreate = onCreate;
     }
 
     public Long getId() {
@@ -48,5 +52,13 @@ public class AnalyticResponseDTO {
 
     public void setTypeOfRisk(String typeOfRisk) {
         this.typeOfRisk = typeOfRisk;
+    }
+
+    public LocalDateTime getOnCreate() {
+        return onCreate;
+    }
+
+    public void setOnCreate(LocalDateTime onCreate) {
+        this.onCreate = onCreate;
     }
 }
