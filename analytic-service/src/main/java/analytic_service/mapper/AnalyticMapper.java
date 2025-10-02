@@ -15,6 +15,7 @@ public class AnalyticMapper {
         dto.setClientId(entity.getClientId());
         dto.setScore(entity.getScore());
         dto.setTypeOfRisk(entity.getTypeOfRisk());
+        dto.setOnCreate(entity.getOnCreate());
 
         return dto;
     }

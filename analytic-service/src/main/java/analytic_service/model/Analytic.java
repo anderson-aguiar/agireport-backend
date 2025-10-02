@@ -31,8 +31,7 @@ public class Analytic {
     public Analytic() {
     }
 
-    public Analytic(Long id, Long clientId, Integer score, String typeOfRisk) {
-        this.id = id;
+    public Analytic(Long clientId, Integer score, String typeOfRisk) {
         this.clientId = clientId;
         this.score = score;
         this.typeOfRisk = typeOfRisk;
