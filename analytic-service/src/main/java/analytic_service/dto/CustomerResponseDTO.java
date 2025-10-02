@@ -1,6 +1,7 @@
 package analytic_service.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CustomerResponseDTO {
 
@@ -14,6 +15,7 @@ public class CustomerResponseDTO {
     private String gender;
     private String maritalStatus;
     private String jobTitle;
+    private LocalDateTime onCreate;
 
 
     public CustomerResponseDTO() {
@@ -21,7 +23,7 @@ public class CustomerResponseDTO {
 
     public CustomerResponseDTO(Long id, String name, String cpf, LocalDate dateOfbirth,
                                double income, String bankAccount, String gender, String maritalStatus,
-                               String jobTitle) {
+                               String jobTitle,  LocalDateTime onCreate) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
@@ -31,6 +33,7 @@ public class CustomerResponseDTO {
         this.gender = gender;
         this.maritalStatus = maritalStatus;
         this.jobTitle = jobTitle;
+        this.onCreate = onCreate;
     }
 
     public Long getId() {
@@ -105,6 +108,14 @@ public class CustomerResponseDTO {
         this.jobTitle = jobTitle;
     }
 
+    public LocalDateTime getOnCreate() {
+        return onCreate;
+    }
+
+    public void setOnCreate(LocalDateTime onCreate) {
+        this.onCreate = onCreate;
+    }
+
     @Override
     public String toString() {
         return "CustomerResponseDTO{" +
@@ -117,6 +128,7 @@ public class CustomerResponseDTO {
                 ", gender='" + gender + '\'' +
                 ", maritalStatus='" + maritalStatus + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
+                ", onCreate=" + onCreate +
                 '}';
     }
 }

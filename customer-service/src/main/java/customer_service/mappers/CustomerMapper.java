@@ -48,6 +48,7 @@ public class CustomerMapper {
         dto.setGender(entity.getGender());
         dto.setMaritalStatus(entity.getMaritalStatus());
         dto.setJobTitle(entity.getJobTitle());
+        dto.setOnCreate(entity.getOnCreate());
 
         AddressResponseDTO addressResponseDTO = addressMapper.toDto(entity.getAddress());
         dto.setAddressResponseDTO(addressResponseDTO);
