@@ -54,27 +54,30 @@ public class AnalyticService {
             log.info("Historico " + histories);
 
             score = 300;
+
+        }else {
+            double[] data = generateVector.generateData(histories, customer);
+            log.info("Dados do vetor gerado: " + Arrays.toString(data));
+            log.info("Dados do customer: " + customer);
+
+            score = scoreService.calc(data);
+
         }
 
-        double[] data = generateVector.generateData(histories, customer);
-        log.info("Dados do vetor gerado: " + Arrays.toString(data));
-        log.info("Dados do customer: " + customer);
-
-        score = scoreService.calc(data);
         String typeOfRisk = getTypeOfRisk(score);
         Analytic entity = new Analytic(customerId, score, typeOfRisk);
         analyticRepository.save(entity);
 
-        return analyticMapper.toDto(entity);
+        return analyticMapper.toDto(entity, onCreateDate);
     }
 
     private String getTypeOfRisk(int score) {
         String typeOfRisk = "";
-        if(score < 399){
+        if (score < 350) {
             typeOfRisk = "ALTO RISCO";
         } else if (score < 699) {
             typeOfRisk = "MEDIO RISCO";
-        }else {
+        } else {
             typeOfRisk = "BAIXO RISCO";
         }
         return typeOfRisk;
