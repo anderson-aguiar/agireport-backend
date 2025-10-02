@@ -11,7 +11,7 @@ INSERT INTO tb_address (street, number, neighborhood, city, state, zip_code, on_
 
 INSERT INTO tb_address (street, number, neighborhood, city, state, zip_code, on_create, on_update) VALUES ('Rua das Acácias', 321, 'Jardins', 'Belo Horizonte', 'MG', '30112-020', '2023-07-15 09:45:00', '2024-06-01 11:45:00');
 
-INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('João Silva', '39053344705', '1990-05-20', 3500.00, '12345-6', 'Masculino', 'Solteiro', 'Analista de Sistemas', 1, '2023-12-01 08:30:00', '2024-01-15 10:00:00');
+INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('João Silva', '39053344705', '1990-05-20', 20500.00, '12345-6', 'Masculino', 'Solteiro', 'Analista de Sistemas', 1, '2023-12-01 08:30:00', '2024-01-15 10:00:00');
 
 INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Maria Oliveira', '84859846001', '1985-09-15', 5000.00, '65432-1', 'Feminino', 'Casada', 'Engenheira Civil', 2, '2023-11-10 14:00:00', '2024-02-20 15:30:00');
 
