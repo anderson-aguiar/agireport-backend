@@ -19,13 +19,11 @@ public class AnalyticController {
         this.analyticService = analyticService;
     }
 
-    //TESTE DE REQUISIÇÃO AO MICROSERVIÇO HISTORY
-
-
     @PostMapping("/{customerId}")
     public ResponseEntity<AnalyticResponseDTO> create(@PathVariable Long customerId){
         AnalyticResponseDTO response = analyticService.save(customerId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
 }

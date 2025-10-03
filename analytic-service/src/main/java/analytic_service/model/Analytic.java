@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_analise")
+@Table(name = "tb_analytic")
 @EntityListeners(AuditingEntityListener.class)
 public class Analytic {
 
@@ -16,7 +16,7 @@ public class Analytic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long clientId;
+    private Long customerId;
     private Integer score;
     private String typeOfRisk;
 
@@ -31,8 +31,8 @@ public class Analytic {
     public Analytic() {
     }
 
-    public Analytic(Long clientId, Integer score, String typeOfRisk) {
-        this.clientId = clientId;
+    public Analytic(Long customerId, Integer score, String typeOfRisk) {
+        this.customerId = customerId;
         this.score = score;
         this.typeOfRisk = typeOfRisk;
     }
@@ -46,11 +46,11 @@ public class Analytic {
     }
 
     public Long getClientId() {
-        return clientId;
+        return customerId;
     }
 
     public void setClientId(Long clientId) {
-        this.clientId = clientId;
+        this.customerId = clientId;
     }
 
     public Integer getScore() {

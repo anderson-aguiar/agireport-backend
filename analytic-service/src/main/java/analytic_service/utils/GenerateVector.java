@@ -36,13 +36,12 @@ public class GenerateVector {
 
                 if ("EMPRESTIMO".equals(eventType) || "FINANCIAMENTO".equals(eventType)) {
 
-                    if ("EMPRESTIMO".equals(eventType)) {
-                        loans++;
-                    } else {
-                        financings++;
-                    }
-
                     if ("ATIVO".equals(status)) {
+                        if ("EMPRESTIMO".equals(eventType)) {
+                            loans++;
+                        } else {
+                            financings++;
+                        }
                         Object valueObj = payload.get("value");
                         Object installmentsObj = payload.get("installments");
 
