@@ -21,4 +21,4 @@ INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, 
 
 INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Paulo Souza', '74562342000', '1980-03-25', 6100.00, '22334-5', 'Masculino', 'Divorciado', 'Médico', 5, '2023-08-01 13:00:00', '2024-05-05 14:30:00');
 
-INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Juliana Almeida', '48844278000', '1995-11-30', 3200.00, '55667-8', 'Feminino', 'Solteira', 'Advogada', 6, '2023-07-15 09:45:00', '2024-06-01 11:45:00');
+INSERT INTO tb_customer (name, cpf, date_ofbirth, income, bank_account, gender, marital_status, job_title, address_id, on_create, on_update) VALUES ('Juliana Almeida', '48844278000', '1982-11-30', 15700.00, '55667-8', 'Feminino', 'Solteira', 'Advogada', 6, '2023-07-15 09:45:00', '2024-06-01 11:45:00');
