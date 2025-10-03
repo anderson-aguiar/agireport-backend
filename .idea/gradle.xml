@@ -22,6 +22,15 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/auth-service" />
+        <option name="gradleJvm" value="zulu-21" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/auth-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/customer-service" />
         <option name="gradleJvm" value="zulu-21" />
         <option name="modules">

@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,12 @@ public interface AnalyticRepository extends JpaRepository<Analytic, Long> {
     Optional<Analytic> findByCustomerIdLastTenDays(
             @Param("customerId") Long customerId,
             @Param("startDate") LocalDateTime startDate);
+
+    @Query(value = "SELECT * FROM tb_analytic WHERE  customer_id = :customerId " +
+            "AND on_create >= :startDate AND status = 'PROCESSANDO' ORDER BY on_create DESC LIMIT 1", nativeQuery = true)
+    Optional<Analytic> findByCustomerIdLastTenDaysAndStatusProcess(
+            @Param("customerId") Long customerId,
+            @Param("startDate") LocalDateTime startDate);
+
+    List<Analytic> findByStatus(String status);
 }
