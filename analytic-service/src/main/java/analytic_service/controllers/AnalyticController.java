@@ -25,5 +25,5 @@ public class AnalyticController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    
+
 }

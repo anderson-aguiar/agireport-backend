@@ -10,6 +10,7 @@ import analytic_service.repositories.AnalyticRepository;
 import analytic_service.utils.GenerateVector;
 import analytic_service.utils.WebClientUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.nd4j.autodiff.listeners.records.History;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,10 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnalyticService {
@@ -66,6 +69,14 @@ public class AnalyticService {
 
             score = scoreService.calc(data);
 
+        }
+
+        LocalDateTime startDate = LocalDate.now().minusDays(10).atStartOfDay();
+        //Faz a busca no banco para ver se esse cliente já tem alguma análise nos últimos 10 dias
+        //Se tiver o retorno será essa análise, não faz uma nova persistência
+        Optional<Analytic> optionalAnalytic = analyticRepository.findByCustomerIdLastTenDays(customerId, startDate);
+        if(optionalAnalytic.isPresent()){
+            return analyticMapper.toDto(optionalAnalytic.get(), onCreateDate);
         }
 
         String typeOfRisk = getTypeOfRisk(score);
