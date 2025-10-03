@@ -1,5 +1,6 @@
 package analytic_service.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -11,9 +12,13 @@ public class WebClientUtil {
     private final WebClient webClient;
 
     // Injetando o WebClient com a baseUrl
-    public WebClientUtil(WebClient.Builder builder) {
+    public WebClientUtil(WebClient.Builder builder,
+                         @Value("${api.key}") String apiKey,
+                         @Value("${api.name}") String apiName) {
         this.webClient = builder
                 .baseUrl("http://localhost:8080")
+                .defaultHeader("X-API-KEY", apiKey)
+                .defaultHeader("X-API-NAME", apiName)
                 .build();
     }
 

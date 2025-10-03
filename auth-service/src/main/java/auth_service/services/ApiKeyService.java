@@ -40,4 +40,9 @@ public class ApiKeyService {
         return new ApiKeyValidationDTO(true, "ok");
     }
 
+    //usado para criar o hash da key
+    public String encodeKey(String key) {
+        return passwordEncoder.encode(key);
+    }
+
 }

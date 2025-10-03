@@ -13,15 +13,17 @@ spring:
               uri: http://localhost:8083
               predicates:
                 - Path=/customers/**
-              filters: []
+              filters: [ApiKeyAuth]
             - id: analytic-service
               uri: http://localhost:8082
               predicates:
                 - Path=/analytic/**
-              filters: []
+              filters: [ApiKeyAuth]
             - id: history-service
               uri: http://localhost:8084
               predicates:
                 - Path=/history/**
-              filters: []
-
+              filters: [ApiKeyAuth]
+agireport:
+  services:
+    auth-url: http://localhost:8081/auth
