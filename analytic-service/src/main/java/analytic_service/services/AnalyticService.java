@@ -176,8 +176,8 @@ public class AnalyticService {
             analyticRepository.save(entity);
 
         } catch (WebClientResponseException.InternalServerError ex) {
-            log.warn("Falha no History-Service durante o reprocessamento da Análise ID {} (Cliente {}). Tentativa falhou.",
-                    entity.getId(), customerId);
+            log.warn("Falha no History-Service durante o reprocessamento. Tentativa falhou.");
+
         }
     }
 
