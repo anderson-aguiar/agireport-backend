@@ -1,6 +1,13 @@
 package analytic_service.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +26,7 @@ public class Analytic {
     private Long customerId;
     private Integer score;
     private String typeOfRisk;
+    private String status;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -28,6 +36,9 @@ public class Analytic {
     @Column(nullable = false)
     private LocalDateTime onUpdate;
 
+    @Version
+    private Long version;
+
     public Analytic() {
     }
 
@@ -35,6 +46,11 @@ public class Analytic {
         this.customerId = customerId;
         this.score = score;
         this.typeOfRisk = typeOfRisk;
+        this.status = "PROCESSANDO";
+    }
+    public Analytic(Long customerId){
+        this.customerId = customerId;
+        this.status = "PROCESSANDO";
     }
 
     public Long getId() {
@@ -67,6 +83,14 @@ public class Analytic {
 
     public void setTypeOfRisk(String typeOfRisk) {
         this.typeOfRisk = typeOfRisk;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getOnCreate() {

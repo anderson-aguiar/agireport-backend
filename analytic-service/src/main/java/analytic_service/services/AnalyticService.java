@@ -1,6 +1,6 @@
 package analytic_service.services;
 
-import analytic_service.dto.AnalyticResponseDTO;
+import analytic_service.dto.AnalyticResponseDefaultDTO;
 import analytic_service.dto.CustomerResponseDTO;
 import analytic_service.dto.HistoryResponseDTO;
 import analytic_service.exceptions.ServiceNotFoundException;
@@ -10,9 +10,10 @@ import analytic_service.repositories.AnalyticRepository;
 import analytic_service.utils.GenerateVector;
 import analytic_service.utils.WebClientUtil;
 import jakarta.persistence.EntityNotFoundException;
-import org.nd4j.autodiff.listeners.records.History;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -48,42 +49,136 @@ public class AnalyticService {
     }
 
     @Transactional
-    public AnalyticResponseDTO save(Long customerId) {
-
-        List<HistoryResponseDTO> histories = findHistories(customerId);
+    public AnalyticResponseDefaultDTO save(Long customerId) {
         CustomerResponseDTO customer = findCustomer(customerId);
-        int score = 0;
-        // Verifica se o cliente tem menos de 30 dias ou não possui histórico
         LocalDate onCreateDate = customer.getOnCreate().toLocalDate();
-        if (onCreateDate.isAfter(LocalDate.now().minusDays(30)) || histories.isEmpty()) {
-            log.info("Cliente novo ou sem histórico. Score inicial = 300");
-            log.info("Dados do customer: " + customer);
-            log.info("Historico " + histories);
 
-            score = 300;
+        try {
+            List<HistoryResponseDTO> histories = findHistories(customerId);
 
-        }else {
-            double[] data = generateVector.generateData(histories, customer);
-            log.info("Dados do vetor gerado: " + Arrays.toString(data));
-            log.info("Dados do customer: " + customer);
+            int score = 0;
+            // Verifica se o cliente tem menos de 30 dias ou não possui histórico
+            if (onCreateDate.isAfter(LocalDate.now().minusDays(30)) || histories.isEmpty()) {
+                log.info("Cliente novo ou sem histórico. Score inicial = 300");
+                log.info("Dados do customer: " + customer);
+                log.info("Historico " + histories);
 
-            score = scoreService.calc(data);
+                score = 300;
 
+            } else {
+                double[] data = generateVector.generateData(histories, customer);
+                log.info("Dados do vetor gerado: " + Arrays.toString(data));
+                log.info("Dados do customer: " + customer);
+
+                score = scoreService.calc(data);
+
+            }
+
+            LocalDateTime startDate = LocalDate.now().minusDays(10).atStartOfDay();
+            //Faz a busca no banco para ver se esse cliente já tem alguma análise nos últimos 10 dias
+            //Se tiver o retorno será essa análise, não faz uma nova persistência
+            Optional<Analytic> optionalAnalytic = analyticRepository.findByCustomerIdLastTenDays(customerId, startDate);
+            if (optionalAnalytic.isPresent()) {
+                if ("CONCLUIDO".equals(optionalAnalytic.get().getStatus())) {
+                    return analyticMapper.toCompleteDto(optionalAnalytic.get(), onCreateDate);
+                } else if ("PROCESSANDO".equals(optionalAnalytic.get().getStatus())) {
+                    // Setar os dados calculados com sucesso
+                    optionalAnalytic.get().setScore(score);
+                    String typeOfRisk = getTypeOfRisk(score);
+                    optionalAnalytic.get().setTypeOfRisk(typeOfRisk);
+                    optionalAnalytic.get().setStatus("CONCLUIDO");
+
+                    // Salva a entidade existente
+                    analyticRepository.save(optionalAnalytic.get());
+
+                    return analyticMapper.toCompleteDto(optionalAnalytic.get(), onCreateDate);
+                }
+            }
+
+            String typeOfRisk = getTypeOfRisk(score);
+            Analytic entity = new Analytic(customerId, score, typeOfRisk);
+            entity.setStatus("CONCLUIDO");
+            analyticRepository.save(entity);
+
+            return analyticMapper.toCompleteDto(entity, onCreateDate);
+        } catch (ObjectOptimisticLockingFailureException ignored) {
+            //isso aqui é usado para evitar erros de threads quando usamos jobs agendados
+            return save(customerId);
+
+        } catch (WebClientResponseException.InternalServerError ex) {
+            return saveDefault(customerId, customer);
         }
+    }
 
+    @Transactional
+    public AnalyticResponseDefaultDTO saveDefault(Long customerId, CustomerResponseDTO customer) {
+        LocalDate onCreateDate = customer.getOnCreate().toLocalDate();
         LocalDateTime startDate = LocalDate.now().minusDays(10).atStartOfDay();
-        //Faz a busca no banco para ver se esse cliente já tem alguma análise nos últimos 10 dias
-        //Se tiver o retorno será essa análise, não faz uma nova persistência
-        Optional<Analytic> optionalAnalytic = analyticRepository.findByCustomerIdLastTenDays(customerId, startDate);
-        if(optionalAnalytic.isPresent()){
-            return analyticMapper.toDto(optionalAnalytic.get(), onCreateDate);
-        }
 
-        String typeOfRisk = getTypeOfRisk(score);
-        Analytic entity = new Analytic(customerId, score, typeOfRisk);
+        Optional<Analytic> optionalAnalytic = analyticRepository.findByCustomerIdLastTenDaysAndStatusProcess(customerId, startDate);
+        if (optionalAnalytic.isPresent()) {
+            return analyticMapper.toDefaultDto(optionalAnalytic.get(), onCreateDate);
+        }
+        Analytic entity = new Analytic(customerId);
         analyticRepository.save(entity);
 
-        return analyticMapper.toDto(entity, onCreateDate);
+        return analyticMapper.toDefaultDto(entity, onCreateDate);
+    }
+
+    @Scheduled(fixedRateString = "10s")
+    public void scheduledReprocessPending() {
+        log.info("INICIANDO JOB AGENDADO: Verificando análises pendentes.");
+
+        // 1. Busca todos os registros "PROCESSANDO" de todos os clientes
+        List<Analytic> pendingAnalytics = analyticRepository.findByStatus("PROCESSANDO");
+
+        if (pendingAnalytics.isEmpty()) {
+            log.info("JOB AGENDADO: Nenhuma análise PROCESSANDO encontrada.");
+            return;
+        }
+        for (Analytic entity : pendingAnalytics) {
+            try {
+                // Chama o método que tenta concluir o processamento
+                reprocessSingleAnalytic(entity);
+            } catch (ObjectOptimisticLockingFailureException ignored) {
+                log.info("Sendo tratado por outra thread - ignorado");
+            }
+            catch (Exception e) {
+                log.error("Falha CRÍTICA ao tentar reprocessar a Análise ID {}. Cliente ID: {}",
+                        entity.getId(), entity.getClientId(), e);
+            }
+        }
+    }
+
+    @Transactional
+    public void reprocessSingleAnalytic(Analytic entity) {
+        Long customerId = entity.getClientId();
+
+        CustomerResponseDTO customer = findCustomer(customerId); // Pode lançar exceção
+        LocalDate onCreateDate = customer.getOnCreate().toLocalDate();
+
+        try {
+            List<HistoryResponseDTO> histories = findHistories(customerId); // Pode lançar WebClientResponseException
+            int score = 0;
+
+            if (onCreateDate.isAfter(LocalDate.now().minusDays(30)) || histories.isEmpty()) {
+                score = 300;
+            } else {
+                double[] data = generateVector.generateData(histories, customer);
+                score = scoreService.calc(data);
+            }
+
+            String typeOfRisk = getTypeOfRisk(score);
+            entity.setScore(score);
+            entity.setTypeOfRisk(typeOfRisk);
+            entity.setStatus("CONCLUIDO");
+
+            analyticRepository.save(entity);
+
+        } catch (WebClientResponseException.InternalServerError ex) {
+            log.warn("Falha no History-Service durante o reprocessamento da Análise ID {} (Cliente {}). Tentativa falhou.",
+                    entity.getId(), customerId);
+        }
     }
 
     private String getTypeOfRisk(int score) {
@@ -99,16 +194,13 @@ public class AnalyticService {
     }
 
     private List<HistoryResponseDTO> findHistories(Long customerId) {
-        try{
-            String uri = "/history/" + customerId + "/last-year";
-            return webClientUtil.getList(uri, HistoryResponseDTO.class);
-        }catch (WebClientResponseException.InternalServerError ex){
-            throw new ServiceNotFoundException("History-Service indiponivel");
-        }
+        String uri = "/history/" + customerId + "/last-year";
+        return webClientUtil.getList(uri, HistoryResponseDTO.class);
+
     }
 
     private CustomerResponseDTO findCustomer(Long customerId) {
-        try{
+        try {
             String uri = "/customers/" + customerId;
             return webClientUtil.get(uri, CustomerResponseDTO.class);
 
