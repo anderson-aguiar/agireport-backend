@@ -26,4 +26,7 @@ public interface AnalyticRepository extends JpaRepository<Analytic, Long> {
             @Param("startDate") LocalDateTime startDate);
 
     List<Analytic> findByStatus(String status);
+
+    List<Analytic> findByCustomerId(Long customerId);
+
 }
