@@ -212,6 +212,17 @@ public class AnalyticService {
             throw new ServiceNotFoundException("Customer-Service indisponível");
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<Analytic> findByCustomerId(Long customerId) {
+        List<Analytic> analytics = analyticRepository.findByCustomerId(customerId);
+
+        if (analytics.isEmpty()) {
+            throw new EntityNotFoundException("Não foram encontradas análises para o cliente " + customerId);
+        }
+
+        return analytics;
+    }
 }
 
 

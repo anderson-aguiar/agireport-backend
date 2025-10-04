@@ -2,13 +2,13 @@ package analytic_service.controllers;
 
 import analytic_service.dto.AnalyticResponseCompletedDTO;
 import analytic_service.dto.AnalyticResponseDefaultDTO;
+import analytic_service.model.Analytic;
 import analytic_service.services.AnalyticService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/analytic")
@@ -29,6 +29,13 @@ public class AnalyticController {
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<Analytic>> findByCustomer(@PathVariable Long customerId) {
+        List<Analytic> response = analyticService.findByCustomerId(customerId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
