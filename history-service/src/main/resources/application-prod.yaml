@@ -1,0 +1,24 @@
+server:
+  port: ${PORT_HISTORY}
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL_HISTORY}
+    username: ${DB_USERNAME_HISTORY}
+    password: ${DB_PASSWORD_HISTORY}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: history
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+springdoc:
+  swagger-ui:
+    supportedSubmitMethods: [get]

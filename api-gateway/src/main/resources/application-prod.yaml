@@ -1,0 +1,31 @@
+server:
+  port: ${PORT_GATEWAY}
+
+spring:
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          default-filters:
+            - RemoveRequestHeader=Cookie
+          routes:
+            - id: customer-service
+              uri: http://customer-service:8083
+              predicates:
+                - Path=/customers/**
+              filters: [ApiKeyAuth]
+            - id: analytic-service
+              uri: http://analytic-service:8082
+              predicates:
+                - Path=/analytic/**
+              filters: [ApiKeyAuth]
+            - id: history-service
+              uri: http://history-service:8084
+              predicates:
+                - Path=/history/**
+              filters: [ApiKeyAuth]
+
+agireport:
+  services:
+    auth-url: http://auth-service:8081/auth

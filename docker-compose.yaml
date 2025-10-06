@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    env_file: .env
+    ports:
+      - "${PORT_GATEWAY}:${PORT_GATEWAY}"
+    networks:
+      - agireport-network
+    depends_on:
+      - auth-service
+      - history-service
+
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    env_file: .env
+    environment:
+      - SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
+    ports:
+      - "${PORT_AUTH}:${PORT_AUTH}"
+    networks:
+      - agireport-network
+
+  history-service:
+    build:
+      context: ./history-service
+      dockerfile: Dockerfile
+    container_name: history-service
+    env_file: .env
+    environment:
+      - SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
+    ports:
+      - "${PORT_HISTORY}:${PORT_HISTORY}"
+    networks:
+      - agireport-network
+
+networks:
+  agireport-network:
+    driver: bridge

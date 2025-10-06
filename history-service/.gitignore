@@ -10,6 +10,8 @@ build/
 .gitignore:*
 build:*
 config:*
+certs/*
+!certs/.gitkeep
 
 #### ARQUIVOS TEMPORARIOS EM GERAL
 *.orig

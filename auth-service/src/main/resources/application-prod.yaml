@@ -1,0 +1,20 @@
+server:
+  port: ${PORT_AUTH}
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL_AUTH}
+    username: ${DB_USERNAME_AUTH}
+    password: ${DB_PASSWORD_AUTH}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: auth
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
