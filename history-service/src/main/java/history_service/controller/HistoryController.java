@@ -30,7 +30,7 @@ public class HistoryController {
     private HistoryService historyService;
 
     @Operation(summary = "Criar novo histórico",
-            description = "Cadastra um novo recurso no sistema com base nos dados enviados no corpo da requisição.")
+            description = "Cadastra um novo historico no sistema com base nos dados enviados no corpo da requisição.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                     content = @Content(mediaType = "application/json",
