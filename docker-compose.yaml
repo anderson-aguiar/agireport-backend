@@ -1,10 +1,6 @@
-version: '3.9'
-
 services:
   api-gateway:
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+    image: andersomartins/api-gateway:latest
     container_name: api-gateway
     env_file: .env
     ports:
@@ -16,9 +12,7 @@ services:
       - history-service
 
   auth-service:
-    build:
-      context: ./auth-service
-      dockerfile: Dockerfile
+    image: andersomartins/auth-service:latest
     container_name: auth-service
     env_file: .env
     environment:
@@ -29,9 +23,7 @@ services:
       - agireport-network
 
   history-service:
-    build:
-      context: ./history-service
-      dockerfile: Dockerfile
+    image: andersomartins/history-service:latest
     container_name: history-service
     env_file: .env
     environment:
