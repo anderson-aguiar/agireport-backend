@@ -1,4 +1,4 @@
-name: Deploy VM1 (CI/CD)
+name: Deploy VM1 CI/CD
 
 on:
   push:
