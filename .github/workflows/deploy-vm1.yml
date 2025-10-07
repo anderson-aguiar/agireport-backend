@@ -1,20 +1,22 @@
-name: Deploy VM1
+name: Deploy VM1 (CI/CD)
 
 on:
   push:
     branches:
-      - main  # ou a branch que você quiser monitorar
+      - main # Monitora a branch principal
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    # Variáveis de ambiente configuradas para o Job
     env:
+      # OBS: Usamos DOCKER_PASSWORD porque este é o nome do seu Secret
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}           # ex: 164.152.192.160
-      VM_SSH_USER: ${{ secrets.VM_SSH_USER }}           # ex: ubuntu
-      VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}             # chave privada da VM
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_PASSWORD }} 
+      VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
+      VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
+      VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
       PROJECT_DIR: ~/agireport-backend
 
     steps:
@@ -27,11 +29,12 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ env.DOCKERHUB_USERNAME }} # Usa a variável de ambiente
+          password: ${{ env.DOCKERHUB_TOKEN }}    # Usa o Secret DOCKER_PASSWORD via env
 
       - name: Build and push auth-service
         run: |
+          # O DOCKERHUB_USERNAME já está carregado no env
           docker build -t $DOCKERHUB_USERNAME/auth-service:latest ./auth-service
           docker push $DOCKERHUB_USERNAME/auth-service:latest
 
@@ -48,10 +51,15 @@ jobs:
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
+          # Parâmetros SSH para a Action
           host: ${{ env.VM_SSH_HOST }}
           username: ${{ env.VM_SSH_USER }}
           key: ${{ env.VM_SSH_KEY }}
+          
+          # Comandos a serem executados na sua VM
           script: |
+            echo "Iniciando deploy na VM: $(date)"
             cd $PROJECT_DIR
-            docker-compose pull
-            docker-compose up -d
+            docker-compose pull # Baixa as novas imagens :latest
+            docker-compose up -d  # Recria/atualiza os contêineres
+            echo "Deploy concluído."
