@@ -9,7 +9,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    # Variáveis de ambiente: Usadas apenas para o Deploy SSH, pois são as únicas que precisam estar no 'env'
+    # Variáveis de ambiente: Mantemos apenas as variáveis de SSH e do diretório para o deploy
     env:
       VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
       VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
@@ -24,32 +24,32 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         
-      # NOVO PASSO: Configuração do Java para compilação
+      # NOVO PASSO: Configuração do Java e cache do Gradle
       - name: Set up Java 21 Environment
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-          # Adiciona cache para dependências do Gradle, acelerando futuros builds
           cache: 'gradle' 
 
-      # Login no Docker Hub (Corrigido)
+      # Permissão de execução para o gradlew na raiz do projeto
+      - name: Grant execution permission to gradlew
+        run: chmod +x ./gradlew 
+
+      # Login no Docker Hub (Corrigido, passa Secrets diretamente)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }} # Usa o Secret correto
+          password: ${{ secrets.DOCKER_PASSWORD }} 
 
       # ===============================================
-      # 1. AUTH-SERVICE (Build Gradle -> Build Docker -> Push)
+      # 1. AUTH-SERVICE
       # ===============================================
 
+      # CORRIGIDO: Compila o submódulo ':auth-service' a partir da raiz
       - name: Build auth-service JAR (Gradle)
-        run: |
-          # Garante permissão de execução do wrapper
-          chmod +x ./auth-service/gradlew
-          # Roda o build (assumindo que o wrapper está na pasta raiz do serviço)
-          ./auth-service/gradlew build -x test 
+        run: ./gradlew :auth-service:build -x test 
         
       - name: Build and push auth-service Docker Image
         run: |
@@ -58,13 +58,12 @@ jobs:
           docker push $DOCKER_USER/auth-service:latest
 
       # ===============================================
-      # 2. HISTORY-SERVICE (Build Gradle -> Build Docker -> Push)
+      # 2. HISTORY-SERVICE
       # ===============================================
       
+      # CORRIGIDO: Compila o submódulo ':history-service'
       - name: Build history-service JAR (Gradle)
-        run: |
-          chmod +x ./history-service/gradlew
-          ./history-service/gradlew build -x test
+        run: ./gradlew :history-service:build -x test
         
       - name: Build and push history-service Docker Image
         run: |
@@ -73,13 +72,12 @@ jobs:
           docker push $DOCKER_USER/history-service:latest
 
       # ===============================================
-      # 3. API-GATEWAY (Build Gradle -> Build Docker -> Push)
+      # 3. API-GATEWAY
       # ===============================================
 
+      # CORRIGIDO: Compila o submódulo ':api-gateway'
       - name: Build api-gateway JAR (Gradle)
-        run: |
-          chmod +x ./api-gateway/gradlew
-          ./api-gateway/gradlew build -x test
+        run: ./gradlew :api-gateway:build -x test
         
       - name: Build and push api-gateway Docker Image
         run: |
@@ -95,6 +93,7 @@ jobs:
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
+          # Usa as variáveis de ambiente (env) para o SSH
           host: ${{ env.VM_SSH_HOST }}
           username: ${{ env.VM_SSH_USER }}
           key: ${{ env.VM_SSH_KEY }}
