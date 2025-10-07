@@ -32,7 +32,7 @@ public class HistoryController {
     @Operation(summary = "Criar novo histórico",
             description = "Cadastra um novo historico no sistema com base nos dados enviados no corpo da requisição.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
+            @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso.",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = HistoryRequestDTO.class)))
     })
