@@ -16,7 +16,7 @@ public class WebClientUtil {
                          @Value("${api.key}") String apiKey,
                          @Value("${api.name}") String apiName) {
         this.webClient = builder
-                .baseUrl("http://localhost:8080")
+                .baseUrl("http://api-gateway:8080")
                 .defaultHeader("X-API-KEY", apiKey)
                 .defaultHeader("X-API-NAME", apiName)
                 .build();

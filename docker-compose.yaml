@@ -5,11 +5,15 @@ services:
     env_file: .env
     ports:
       - "${PORT_GATEWAY}:${PORT_GATEWAY}"
+    volumes:
+      - ./certs/ca.pem:/certs/ca.pem
     networks:
       - agireport-network
     depends_on:
       - auth-service
       - history-service
+      - customer-service
+      - analytic-service
 
   auth-service:
     image: andersomartins/auth-service:latest
@@ -19,6 +23,8 @@ services:
       - SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
     ports:
       - "${PORT_AUTH}:${PORT_AUTH}"
+    volumes:
+      - ./certs/ca.pem:/certs/ca.pem
     networks:
       - agireport-network
 
@@ -30,6 +36,36 @@ services:
       - SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
     ports:
       - "${PORT_HISTORY}:${PORT_HISTORY}"
+    volumes:
+      - ./certs/ca.pem:/certs/ca.pem
+    networks:
+      - agireport-network
+
+  # NOVO: customer-service (Porta 8083)
+  customer-service:
+    image: andersomartins/customer-service:latest
+    container_name: customer-service
+    env_file: .env
+    environment:
+      - SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
+    ports:
+      - "${PORT_CUSTOMER}:${PORT_CUSTOMER}"
+    volumes:
+      - ./certs/ca.pem:/certs/ca.pem
+    networks:
+      - agireport-network
+
+  # NOVO: analytic-service (Porta 8082)
+  analytic-service:
+    image: andersomartins/analytic-service:latest
+    container_name: analytic-service
+    env_file: .env
+    environment:
+      - SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
+    ports:
+      - "${PORT_ANALYTIC}:${PORT_ANALYTIC}"
+    volumes:
+      - ./certs/ca.pem:/certs/ca.pem
     networks:
       - agireport-network
 

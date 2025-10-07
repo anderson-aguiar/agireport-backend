@@ -3,7 +3,7 @@ name: Deploy VM1 (CI/CD)
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   build-and-deploy:
@@ -14,7 +14,8 @@ jobs:
       VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
       VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
       VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
-      #PROJECT_DIR: $HOME/agireport-backend
+      DOCKER_USER: ${{ secrets.DOCKER_USERNAME }} # Simplificando para uso no build/push
+      PROJECT_DIR_REMOTO: $HOME/agireport-backend # Definindo a pasta remota
 
     steps:
       - name: Checkout code
@@ -23,71 +24,76 @@ jobs:
       # Configuração de ferramentas
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
+
       # 1. Configuração do Java e cache do Gradle
       - name: Set up Java 21 Environment
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'gradle' 
+          cache: 'gradle'
 
       # 2. Login no Docker Hub (Passa Secrets diretamente)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }} 
+          username: ${{ env.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       # ===============================================
       # 3. BUILDS: Compilação, Docker Build e Push
       # ===============================================
 
-      # === AUTH-SERVICE ===
-      - name: Build auth-service JAR (Gradle)
-        # working-directory é CRÍTICO: Navega para a pasta do serviço
+      # --- AUTH-SERVICE ---
+      - name: Build and push auth-service
         working-directory: ./auth-service
         run: |
           chmod +x ./gradlew 
           ./gradlew build -x test 
-        
-      - name: Build and push auth-service Docker Image
-        run: |
-          DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
-          docker build -t $DOCKER_USER/auth-service:latest ./auth-service
-          docker push $DOCKER_USER/auth-service:latest
+          # O build do Docker deve referenciar a pasta de contexto (./auth-service)
+          docker build -t ${{ env.DOCKER_USER }}/auth-service:latest .
+          docker push ${{ env.DOCKER_USER }}/auth-service:latest
 
-      # === HISTORY-SERVICE ===
-      - name: Build history-service JAR (Gradle)
+      # --- HISTORY-SERVICE ---
+      - name: Build and push history-service
         working-directory: ./history-service
         run: |
           chmod +x ./gradlew
           ./gradlew build -x test
-        
-      - name: Build and push history-service Docker Image
-        run: |
-          DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
-          docker build -t $DOCKER_USER/history-service:latest ./history-service
-          docker push $DOCKER_USER/history-service:latest
+          docker build -t ${{ env.DOCKER_USER }}/history-service:latest .
+          docker push ${{ env.DOCKER_USER }}/history-service:latest
 
-      # === API-GATEWAY ===
-      - name: Build api-gateway JAR (Gradle)
+      # --- CUSTOMER-SERVICE (NOVO - MYSQL) ---
+      - name: Build and push customer-service
+        working-directory: ./customer-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build -x test
+          docker build -t ${{ env.DOCKER_USER }}/customer-service:latest .
+          docker push ${{ env.DOCKER_USER }}/customer-service:latest
+
+      # --- ANALYTIC-SERVICE (NOVO - Correção FROM jammy) ---
+      - name: Build and push analytic-service
+        working-directory: ./analytic-service
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build -x test
+          docker build -t ${{ env.DOCKER_USER }}/analytic-service:latest .
+          docker push ${{ env.DOCKER_USER }}/analytic-service:latest
+
+      # --- API-GATEWAY ---
+      - name: Build and push api-gateway
         working-directory: ./api-gateway
         run: |
           chmod +x ./gradlew
           ./gradlew build -x test
-        
-      - name: Build and push api-gateway Docker Image
-        run: |
-          DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
-          docker build -t $DOCKER_USER/api-gateway:latest ./api-gateway
-          docker push $DOCKER_USER/api-gateway:latest
-
+          docker build -t ${{ env.DOCKER_USER }}/api-gateway:latest .
+          docker push ${{ env.DOCKER_USER }}/api-gateway:latest
 
       # ===============================================
       # 4. DEPLOY FINAL
       # ===============================================
-      
+
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -97,17 +103,13 @@ jobs:
           script: |
             echo "Iniciando deploy na VM..."
             
-            # CORREÇÃO CRÍTICA: Força o uso do arquivo docker-compose.yaml
-            # Isso resolve o erro 'Can't find a suitable configuration file'
-            # docker-compose -f docker-compose.yml pull
-            # docker-compose -f docker-compose.yml up -d
-            PROJECT_DIR_REMOTO="$HOME/agireport-backend"
-            
-            # Navega para o diretório
-            cd $PROJECT_DIR_REMOTO
+            # Navega para o diretório de deploy
+            cd ${{ env.PROJECT_DIR_REMOTO }}
 
-            # Chama o Compose usando o caminho absoluto
-            docker compose -f $PROJECT_DIR_REMOTO/docker-compose.yaml pull
-            docker compose -f $PROJECT_DIR_REMOTO/docker-compose.yaml up -d
-            
+            # Puxa as imagens mais recentes do Docker Hub
+            docker compose pull
+
+            # Recria e sobe os contêineres (ignora cache se houver)
+            docker compose up -d
+
             echo "Deploy concluído."
