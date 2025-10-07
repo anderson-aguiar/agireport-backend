@@ -14,7 +14,7 @@ jobs:
       VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
       VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
       VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
-      PROJECT_DIR: $HOME/agireport-backend
+      #PROJECT_DIR: $HOME/agireport-backend
 
     steps:
       - name: Checkout code
@@ -101,7 +101,13 @@ jobs:
             # Isso resolve o erro 'Can't find a suitable configuration file'
             # docker-compose -f docker-compose.yml pull
             # docker-compose -f docker-compose.yml up -d
-            docker compose -f $PROJECT_DIR/docker-compose.yaml pull
-            docker compose -f $PROJECT_DIR/docker-compose.yaml up -d
+            PROJECT_DIR_REMOTO="$HOME/agireport-backend"
+            
+            # Navega para o diretório
+            cd $PROJECT_DIR_REMOTO
+
+            # Chama o Compose usando o caminho absoluto
+            docker compose -f $PROJECT_DIR_REMOTO/docker-compose.yaml pull
+            docker compose -f $PROJECT_DIR_REMOTO/docker-compose.yaml up -d
             
             echo "Deploy concluído."
