@@ -20,25 +20,25 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }} # Nome que você usou!
 
       # 2. Build/Push: Usa secrets.DOCKERHUB_USERNAME na sintaxe de shell
       - name: Build and push auth-service
         run: |
-          DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
           docker build -t $DOCKER_USER/auth-service:latest ./auth-service
           docker push $DOCKER_USER/auth-service:latest
 
       - name: Build and push history-service
         run: |
-          DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
           docker build -t $DOCKER_USER/history-service:latest ./history-service
           docker push $DOCKER_USER/history-service:latest
 
       - name: Build and push api-gateway
         run: |
-          DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
           docker build -t $DOCKER_USER/api-gateway:latest ./api-gateway
           docker push $DOCKER_USER/api-gateway:latest
 
