@@ -102,7 +102,7 @@ jobs:
             # Isso resolve o erro 'Can't find a suitable configuration file'
             # docker-compose -f docker-compose.yml pull
             # docker-compose -f docker-compose.yml up -d
-            docker compose pull
-            docker compose up -d
+            docker compose -f $PROJECT_DIR/docker-compose.yaml pull
+            docker compose -f $PROJECT_DIR/docker-compose.yaml up -d
             
             echo "Deploy concluído."
