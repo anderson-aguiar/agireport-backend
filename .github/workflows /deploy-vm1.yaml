@@ -1,4 +1,4 @@
-name: Deploy VM1
+name: Deploy VM 1
 
 on:
   push:
@@ -54,4 +54,5 @@ jobs:
           script: |
             cd $PROJECT_DIR
             docker-compose pull
+
             docker-compose up -d
