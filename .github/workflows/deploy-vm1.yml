@@ -1,4 +1,4 @@
-name: Deploy VM1 CI/CD
+name: Deploy VM1 (CI/CD)
 
 on:
   push:
@@ -9,49 +9,98 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    # Variáveis de ambiente: Usadas apenas para o Deploy SSH, pois são as únicas que precisam estar no 'env'
+    env:
+      VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
+      VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
+      VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
+      PROJECT_DIR: ~/agireport-backend
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Configuração de ferramentas essenciais
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        
+      # NOVO PASSO: Configuração do Java para compilação
+      - name: Set up Java 21 Environment
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          # Adiciona cache para dependências do Gradle, acelerando futuros builds
+          cache: 'gradle' 
 
-      # 1. Login CRÍTICO: Passa Secrets diretamente para a Action
+      # Login no Docker Hub (Corrigido)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }} # Nome que você usou!
+          password: ${{ secrets.DOCKER_PASSWORD }} # Usa o Secret correto
 
-      # 2. Build/Push: Usa secrets.DOCKERHUB_USERNAME na sintaxe de shell
-      - name: Build and push auth-service
+      # ===============================================
+      # 1. AUTH-SERVICE (Build Gradle -> Build Docker -> Push)
+      # ===============================================
+
+      - name: Build auth-service JAR (Gradle)
+        run: |
+          # Garante permissão de execução do wrapper
+          chmod +x ./auth-service/gradlew
+          # Roda o build (assumindo que o wrapper está na pasta raiz do serviço)
+          ./auth-service/gradlew build -x test 
+        
+      - name: Build and push auth-service Docker Image
         run: |
           DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
           docker build -t $DOCKER_USER/auth-service:latest ./auth-service
           docker push $DOCKER_USER/auth-service:latest
 
-      - name: Build and push history-service
+      # ===============================================
+      # 2. HISTORY-SERVICE (Build Gradle -> Build Docker -> Push)
+      # ===============================================
+      
+      - name: Build history-service JAR (Gradle)
+        run: |
+          chmod +x ./history-service/gradlew
+          ./history-service/gradlew build -x test
+        
+      - name: Build and push history-service Docker Image
         run: |
           DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
           docker build -t $DOCKER_USER/history-service:latest ./history-service
           docker push $DOCKER_USER/history-service:latest
 
-      - name: Build and push api-gateway
+      # ===============================================
+      # 3. API-GATEWAY (Build Gradle -> Build Docker -> Push)
+      # ===============================================
+
+      - name: Build api-gateway JAR (Gradle)
+        run: |
+          chmod +x ./api-gateway/gradlew
+          ./api-gateway/gradlew build -x test
+        
+      - name: Build and push api-gateway Docker Image
         run: |
           DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
           docker build -t $DOCKER_USER/api-gateway:latest ./api-gateway
           docker push $DOCKER_USER/api-gateway:latest
 
-      # 3. Deploy na VM: Usa Secrets diretamente na Action (sem a necessidade de bloco env)
+
+      # ===============================================
+      # 4. DEPLOY FINAL
+      # ===============================================
+      
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.VM_SSH_HOST }}
-          username: ${{ secrets.VM_SSH_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
+          host: ${{ env.VM_SSH_HOST }}
+          username: ${{ env.VM_SSH_USER }}
+          key: ${{ env.VM_SSH_KEY }}
           script: |
             echo "Iniciando deploy na VM..."
-            cd ~/agireport-backend
+            cd $PROJECT_DIR
             docker-compose pull
             docker-compose up -d
             echo "Deploy concluído."
