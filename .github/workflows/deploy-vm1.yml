@@ -14,7 +14,7 @@ jobs:
       VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
       VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
       VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
-      PROJECT_DIR: ~/agireport-backend
+      PROJECT_DIR: $HOME/agireport-backend
 
     steps:
       - name: Checkout code
