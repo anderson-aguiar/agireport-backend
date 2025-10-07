@@ -96,7 +96,6 @@ jobs:
           key: ${{ env.VM_SSH_KEY }}
           script: |
             echo "Iniciando deploy na VM..."
-            cd $PROJECT_DIR
             
             # CORREÇÃO CRÍTICA: Força o uso do arquivo docker-compose.yaml
             # Isso resolve o erro 'Can't find a suitable configuration file'
