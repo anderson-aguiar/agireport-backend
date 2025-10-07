@@ -9,7 +9,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    # Variáveis de ambiente: Para o Deploy SSH
+    # Variáveis de ambiente: Para o Deploy SSH (serão usadas pelo env.NOME na Action)
     env:
       VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
       VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
@@ -32,7 +32,7 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle' 
 
-      # 2. Login no Docker Hub
+      # 2. Login no Docker Hub (Passa Secrets diretamente)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -40,23 +40,20 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }} 
 
       # ===============================================
-      # 3. BUILDS: Usando working-directory para cada serviço
+      # 3. BUILDS: Compilação, Docker Build e Push
       # ===============================================
 
       # === AUTH-SERVICE ===
       - name: Build auth-service JAR (Gradle)
-        # O working-directory é CRÍTICO: Navega para a pasta do serviço
+        # working-directory é CRÍTICO: Navega para a pasta do serviço
         working-directory: ./auth-service
         run: |
-          # 1. Dá permissão ao gradlew DENTRO DA PASTA do serviço
           chmod +x ./gradlew 
-          # 2. Executa o build DENTRO da pasta
           ./gradlew build -x test 
         
       - name: Build and push auth-service Docker Image
         run: |
           DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
-          # O build do Docker ainda usa o caminho relativo do Dockerfile
           docker build -t $DOCKER_USER/auth-service:latest ./auth-service
           docker push $DOCKER_USER/auth-service:latest
 
@@ -100,6 +97,10 @@ jobs:
           script: |
             echo "Iniciando deploy na VM..."
             cd $PROJECT_DIR
-            docker-compose pull
-            docker-compose up -d
+            
+            # CORREÇÃO CRÍTICA: Força o uso do arquivo docker-compose.yaml
+            # Isso resolve o erro 'Can't find a suitable configuration file'
+            docker-compose -f docker-compose.yaml pull
+            docker-compose -f docker-compose.yaml up -d
+            
             echo "Deploy concluído."
