@@ -9,11 +9,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    # Variáveis de ambiente configuradas para o Job
+    # Variáveis de ambiente: Mantemos apenas as de SSH e do diretório para o deploy
     env:
-      # OBS: Usamos DOCKER_PASSWORD porque este é o nome do seu Secret
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKER_PASSWORD }} 
       VM_SSH_HOST: ${{ secrets.VM_SSH_HOST }}
       VM_SSH_USER: ${{ secrets.VM_SSH_USER }}
       VM_SSH_KEY: ${{ secrets.VM_SSH_KEY }}
@@ -26,40 +23,43 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # 1. Login Corrigido: Passa os Secrets DOCKERHUB_USERNAME e DOCKER_PASSWORD diretamente
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ env.DOCKERHUB_USERNAME }} # Usa a variável de ambiente
-          password: ${{ env.DOCKERHUB_TOKEN }}    # Usa o Secret DOCKER_PASSWORD via env
+          username: ${{ secrets.DOCKERHUB_USERNAME }} # Passa o Secret diretamente
+          password: ${{ secrets.DOCKER_PASSWORD }}   # Passa o Secret DOCKER_PASSWORD
 
+      # 2. Build/Push Corrigido: Usa secrets.DOCKERHUB_USERNAME na sintaxe de shell
       - name: Build and push auth-service
         run: |
-          # O DOCKERHUB_USERNAME já está carregado no env
-          docker build -t $DOCKERHUB_USERNAME/auth-service:latest ./auth-service
-          docker push $DOCKERHUB_USERNAME/auth-service:latest
+          # Acesso ao Secret diretamente na sintaxe ${{ secrets.NOME }}
+          DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}
+          docker build -t $DOCKER_USER/auth-service:latest ./auth-service
+          docker push $DOCKER_USER/auth-service:latest
 
       - name: Build and push history-service
         run: |
-          docker build -t $DOCKERHUB_USERNAME/history-service:latest ./history-service
-          docker push $DOCKERHUB_USERNAME/history-service:latest
+          DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}
+          docker build -t $DOCKER_USER/history-service:latest ./history-service
+          docker push $DOCKER_USER/history-service:latest
 
       - name: Build and push api-gateway
         run: |
-          docker build -t $DOCKERHUB_USERNAME/api-gateway:latest ./api-gateway
-          docker push $DOCKERHUB_USERNAME/api-gateway:latest
+          DOCKER_USER=${{ secrets.DOCKERHUB_USERNAME }}
+          docker build -t $DOCKER_USER/api-gateway:latest ./api-gateway
+          docker push $DOCKER_USER/api-gateway:latest
 
+      # 3. Deploy na VM: Usa as variáveis de ambiente (env) definidas no job
       - name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
-          # Parâmetros SSH para a Action
           host: ${{ env.VM_SSH_HOST }}
           username: ${{ env.VM_SSH_USER }}
           key: ${{ env.VM_SSH_KEY }}
-          
-          # Comandos a serem executados na sua VM
           script: |
-            echo "Iniciando deploy na VM: $(date)"
+            echo "Iniciando deploy na VM..."
             cd $PROJECT_DIR
-            docker-compose pull # Baixa as novas imagens :latest
-            docker-compose up -d  # Recria/atualiza os contêineres
+            docker-compose pull
+            docker-compose up -d
             echo "Deploy concluído."
